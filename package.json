@@ -45,6 +45,6 @@
     "initVersion": "7.15.0"
   },
   "engines": {
-    "node": ">=7.0.0"
+    "node": "16.20.0"
   }
 }
