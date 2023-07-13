@@ -1,7 +1,8 @@
 import Head from "next/head";
-
+import { api } from "~/utils/api";
 export default function Home() {
-
+ const hello = api.example.hello.useQuery();
+ console.log(hello.data);
   return (
     <>
       <Head>

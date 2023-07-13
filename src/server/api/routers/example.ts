@@ -3,9 +3,9 @@ import { createTRPCRouter, publicProcedure, protectedProcedure} from "~/server/a
 import { clerkClient } from '@clerk/nextjs';
 
 export const exampleRouter = createTRPCRouter({
-  hello: protectedProcedure.query(({ctx}) => {
+  hello: publicProcedure.query(({ctx}) => {
       return {
-        greeting: `hello! ${ctx.auth?.userId}`
+        greeting: ctx.auth
       }
     }),
   getAll: publicProcedure.query(({ ctx }) => {
