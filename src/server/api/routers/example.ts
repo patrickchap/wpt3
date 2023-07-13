@@ -1,15 +1,18 @@
 import { z } from "zod";
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, publicProcedure, protectedProcedure} from "~/server/api/trpc";
+import { clerkClient } from '@clerk/nextjs';
 
 export const exampleRouter = createTRPCRouter({
-  hello: publicProcedure
-    .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
+  hello: protectedProcedure.query(({ctx}) => {
       return {
-        greeting: `Hello ${input.text}`,
-      };
+        greeting: `hello! ${ctx.auth?.userId}`
+      }
     }),
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.example.findMany();
+  }),
+
+  getAllUsers: protectedProcedure.query(async () => {
+      return await clerkClient.users.getUserList();
   }),
 });

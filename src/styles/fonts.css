@@ -1,0 +1,53 @@
+:root{
+    --secondary-color: #192841;
+}
+/* Fonts */
+@font-face {
+    font-family: 'Champagne & Limousines';
+    src: url('../assets/fonts/Champagne & Limousines.ttf');
+}
+
+@font-face {
+    font-family: 'Champagne & Limousines Bold';
+    src: url('../assets/fonts/Champagne & Limousines Bold.ttf');
+}
+
+@font-face {
+    font-family: 'Champagne & Limousines Bold Italic';
+    src: url('../assets/fonts/Champagne & Limousines Bold Italic.ttf');
+}
+@font-face {
+    font-family: 'Champagne & Limousines Italic';
+    src: url('../assets/fonts/Champagne & Limousines Italic.ttf');
+}
+
+.color-secondary{
+    color: var(--secondary-color);
+}
+
+
+/* Global */
+h1, h2, h3{
+    font-family: 'Champagne & Limousines Bold Italic';
+    font-size: 3rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5rem;
+    margin-bottom: 1rem;
+}
+h4, h5, h6{
+    font-family: 'Champagne & Limousines Bold Italic';
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5rem;
+    margin-bottom: 1rem;
+}
+a, .nav-link {
+    font-family: 'Champagne & Limousines Bold Italic';
+    font-size: 1.2rem;
+    line-spacing: 1.5rem;
+    font-weight: bold;
+}
+p, li, input, textarea, label, button {
+    font-family: 'Champagne & Limousines';
+    font-size: 1.5rem;
+}
