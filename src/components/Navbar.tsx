@@ -84,16 +84,6 @@ export default function Navbar() {
                   </Link>
                 </li>
                 <li className="color-secondary">
-                  <Link href="/our-story">
-                   Our Story 
-                  </Link>
-                </li>
-                <li className="color-secondary">
-                  <Link href="/events">
-                   Events 
-                  </Link>
-                </li>
-                <li className="color-secondary">
                     <UserButton afterSignOutUrl="/"/>
                 </li>
               </ul>
