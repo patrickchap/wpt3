@@ -21,7 +21,7 @@ export default function RSVP() {
     setNames(updatedNames);
   };
 
-  const handleSubmit = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log('Names:', names);
   };
