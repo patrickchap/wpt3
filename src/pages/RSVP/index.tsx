@@ -5,7 +5,7 @@ const users = ['Patrick Chapple', 'Chantil Ferber', 'Scott Chapple'];
 export default function RSVP() {
   const [names, setNames] = useState(['']);
 
-  const handleNameChange = (event: any, index: number) => {
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const updatedNames = [...names];
     updatedNames[index] = event.target.value;
     setNames(updatedNames);
@@ -21,7 +21,7 @@ export default function RSVP() {
     setNames(updatedNames);
   };
 
-  const handleSubmit = (event: any) => {
+  const handleSubmit = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     console.log('Names:', names);
   };

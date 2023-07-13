@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { UserButton } from '@clerk/nextjs';
 import {useRouter} from 'next/router';
+import Link from 'next/link';
+
 export default function Navbar() {
     const [navbar, setNavbar] = useState(false);
     const location = useRouter();
@@ -16,9 +18,9 @@ export default function Navbar() {
             <div className="top-image-overlay">
                 <h1>Patrick & Chantilly</h1>
                 <h4>08.06.24</h4>
-                <a href='/rsvp'>
+                <Link href='/rsvp'>
                     <button>RSVP</button> 
-                </a>
+                </Link>
             </div>
         </div>
     )}
@@ -72,24 +74,24 @@ export default function Navbar() {
             >
               <ul className="items-center justify-center space-y-8 md:flex md:space-x-6 md:space-y-0">
                 <li className="color-secondary">
-                  <a href="/">
+                  <Link href="/">
                     Home
-                  </a>
+                  </Link>
                 </li>
                 <li className="color-secondary">
-                  <a href="/RSVP">
+                  <Link href="/RSVP">
                    RSVP 
-                  </a>
+                  </Link>
                 </li>
                 <li className="color-secondary">
-                  <a href="/our-story">
+                  <Link href="/our-story">
                    Our Story 
-                  </a>
+                  </Link>
                 </li>
                 <li className="color-secondary">
-                  <a href="/events">
+                  <Link href="/events">
                    Events 
-                  </a>
+                  </Link>
                 </li>
                 <li className="color-secondary">
                     <UserButton afterSignOutUrl="/"/>
