@@ -99,6 +99,26 @@ export default function Navbar() {
                   </Link>
                 </li>
                 <li className="color-secondary">
+                  <Link href="/wedding-party">
+                   Wedding Party 
+                  </Link>
+                </li>
+                <li className="color-secondary">
+                  <Link href="/travel-and-lodging">
+                    Travel & Lodging
+                  </Link>
+                </li>
+                <li className="color-secondary">
+                  <Link href="/things-to-do">
+                    Things To Do
+                  </Link>
+                </li>
+                <li className="color-secondary">
+                  <Link href="/registry">
+                    Registry
+                  </Link>
+                </li>
+                <li className="color-secondary">
                     <UserButton afterSignOutUrl="/"/>
                 </li>
               </ul>

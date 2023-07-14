@@ -1,90 +1,96 @@
-import React, { useState } from 'react';
+import { api } from "~/utils/api";
+import { useState } from "react";
+import { type NextPage } from "next";
+import { LoadingPage } from "../../components/loading";
+import type { RouterOutputs } from "~/utils/api";
 
-const users = ['Patrick Chapple', 'Chantil Ferber', 'Scott Chapple'];
+type UserInformation = {
+    fullName: string;
+    clearParentState: () => void;
+}
 
-export default function RSVP() {
-  const [names, setNames] = useState(['']);
+export const RSVPUserOrGroup = (props: UserInformation) => { 
+    const handleClearState = () => {
+        props.clearParentState();
+    };
 
-  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
-    const updatedNames = [...names];
-    updatedNames[index] = event.target.value;
-    setNames(updatedNames);
-  };
-
-  const handleAddName = () => {
-    setNames([...names, '']);
-  };
-
-  const handleRemoveName = (index: number) => {
-    const updatedNames = [...names];
-    updatedNames.splice(index, 1);
-    setNames(updatedNames);
-  };
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    console.log('Names:', names);
-  };
-
-  return (
-    <div className="flex flex-col items-center">
-      <h1 className="text-3xl font-bold mt-8 text-primary">RSVP Page</h1>
-      <form onSubmit={handleSubmit} className="mt-8">
-        {names.map((name, index) => (
-          <div className="mb-4" key={index}>
-            <label htmlFor={`name${index}`} className="block text-lg">
-              Name {index + 1}:
-            </label>
-            <div className="flex">
-              <input
-                type="text"
-                id={`name${index}`}
-                value={name}
-                onChange={(event) => handleNameChange(event, index)}
-                className="px-4 py-2 border border-gray-300 rounded"
-                required
-                autoComplete={`name-${index}`}
-                list={`name-options-${index}`}
-              />
-              {index > 0 && (
-                <button
-                  type="button"
-                  onClick={() => handleRemoveName(index)}
-                  className="bg-red-500 text-white py-2 px-4 rounded ml-2"
-                >
-                  Remove
-                </button>
-              )}
-            </div>
-            {name && (
-              <datalist id={`name-options-${index}`}>
-                {users
-                  .filter((user) =>
-                    user.toLowerCase().includes(name.toLowerCase())
-                  )
-                  .map((user, suggestionIndex) => (
-                    <option key={suggestionIndex} value={user} />
-                  ))}
-              </datalist>
-            )}
+    const {data, isLoading: postsLoading} = api.wedding.getGuestByGuestName.useQuery({fullName: props.fullName});
+    if (postsLoading)
+        return (
+          <div className="flex grow">
+            <LoadingPage />
           </div>
-        ))}
-        <button
-          type="button"
-          onClick={handleAddName}
-          className="bg-secondary text-white py-2 px-4 rounded"
-        >
-          Add Another Person
-        </button>
-        <button
-          type="submit"
-          className="bg-primary text-white py-2 px-4 rounded mt-4"
-        >
-          Submit RSVP
-        </button>
-      </form>
-    </div>
-  );
+        );
+
+    if (!data) {
+
+        return(
+            <>
+                <div className="flex flex-col items-center">Sorry, we can't find your name in our guest list. Please try again.</div>
+                <button onClick={() => handleClearState()} className="bg-primary text-white rounded-md p-2 mt-2 w-full">Try Again!</button>
+            </>
+        )
+    }
+
+    if(data.group){
+        return(
+            <div className="flex flex-col items-center">
+                <h1 className="text-3xl font-bold mt-8 text-primary w-full text-center">Hello {data.guest.fullname}!</h1>
+                <div className="flex flex-col items-center mt-8 w-96">
+                    <h2 className="text-xl font-bold mt-8 text-primary text-center">Please RSVP for your group here</h2>
+                    <button className="bg-primary text-white rounded-md p-2 mt-2 w-full">RSVP for Group</button>
+                    <h2 className="text-xl font-bold mt-8 text-primary text-center">Or RSVP For yourself Here</h2>
+                    <button className="bg-primary text-white rounded-md p-2 mt-2 w-full">RSVP for just you</button>
+                </div>
+            </div>
+        )
+    }
+    else{
+    }
 }
 
 
+const RSVP: NextPage = () => {
+
+    const [input, setInput] = useState("");
+    const [userOrGroup, setUserOrGroup] = useState("");
+
+
+    const clearParentState = () => {
+        setInput('');
+        setUserOrGroup('');
+    };
+
+
+    return (
+        <div className="flex flex-col items-center">
+            <h1 className="text-3xl font-bold mt-8 text-primary">RSVP</h1>
+            {userOrGroup =="" && (
+            <div className="flex flex-col items-center mt-8 w-96">
+                <label htmlFor="fullname" className="text-xl font-bold text-primary">Find Your RSVP</label>
+                <input id="fullname" className="border-2 border-primary rounded-md p-2 mt-2 w-full" type="text" placeholder="Full Name"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)} 
+                    onKeyDown={(e) => { if (e.key === "Enter") {
+                        e.preventDefault();
+                        if (input !== "") {
+                            setUserOrGroup(input);
+                        }
+                      }
+                    }}
+                />
+                <button onClick={() => setUserOrGroup(input)} className="bg-primary text-white rounded-md p-2 mt-2 w-full">Find RSVP</button>
+            </div>
+        
+            )}
+
+            {userOrGroup && (
+                <div className="w-full">
+                    <RSVPUserOrGroup fullName={input} clearParentState={clearParentState}/>
+                </div>
+            )}
+        </div>
+    )
+}
+
+export default RSVP;

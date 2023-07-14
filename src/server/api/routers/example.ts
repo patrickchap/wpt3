@@ -15,4 +15,5 @@ export const exampleRouter = createTRPCRouter({
   getAllUsers: protectedProcedure.query(async () => {
       return await clerkClient.users.getUserList();
   }),
+
 });

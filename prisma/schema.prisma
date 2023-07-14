@@ -3,14 +3,44 @@
 generator client {
   provider = "prisma-client-js"
 }
+
 datasource db {
-  provider = "mysql"
-  url = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
 
 model Example {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model RSVP {
+  id             Int      @id @default(autoincrement())
+  mealselection  String
+  songpreference String
+  responce       Boolean
+  guest          Guest    @relation(fields: [guestId], references: [id])
+  guestId        Int      @unique
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([guestId])
+}
+
+model Guest {
+  id       Int    @id @default(autoincrement())
+  fullname String @unique
+  group    Group  @relation(fields: [groupId], references: [id])
+  groupId  Int
+  RSVP     RSVP?
+
+  @@index([groupId])
+}
+
+model Group {
+  id        Int     @id @default(autoincrement())
+  groupname String  @db.VarChar(255)
+  guests    Guest[]
 }
