@@ -2,7 +2,6 @@ import { api } from "~/utils/api";
 import { useState } from "react";
 import { type NextPage } from "next";
 import { LoadingPage } from "../../components/loading";
-import type { RouterOutputs } from "~/utils/api";
 
 type UserInformation = {
     fullName: string;
@@ -26,7 +25,7 @@ export const RSVPUserOrGroup = (props: UserInformation) => {
 
         return(
             <>
-                <div className="flex flex-col items-center">Sorry, we can't find your name in our guest list. Please try again.</div>
+                <div className="flex flex-col items-center">Sorry, we can&lsquo;t find your name in our guest list. Please try again.</div>
                 <button onClick={() => handleClearState()} className="bg-primary text-white rounded-md p-2 mt-2 w-full">Try Again!</button>
             </>
         )
