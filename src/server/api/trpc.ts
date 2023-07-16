@@ -51,9 +51,11 @@ const createInnerTRPCContext = (_opts: CreateContextOptions) => {
  */
 export const createTRPCContext = (opts: CreateNextContextOptions) => {
  const user = getAuth(opts.req);
+ const req = opts?.req;
   return {
     prisma,
     auth: user,
+    req 
   };
 };
 

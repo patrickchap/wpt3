@@ -4,7 +4,7 @@
 @tailwind utilities;
 
 .top-image{
-    background: url(https://via.placeholder.com/800x500) no-repeat center center;
+    background: url(../../public/images/IMG_5216.jpeg) no-repeat center center;
     background-size: cover;
     height: 55vh;
     display: flex;

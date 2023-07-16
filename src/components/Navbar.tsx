@@ -24,7 +24,7 @@ export default function Navbar() {
             </div>
         </div>
     )}
-      <nav className="w-full bg-[#c28285] shadow">
+      <nav className="w-full bg-[#c28285] bg-opacity-40 shadow">
         <div className="justify-between pb-4 pt-4 mx-auto lg:max-w-7xl md:items-center md:flex md:px-8">
           <div>
             <div>
