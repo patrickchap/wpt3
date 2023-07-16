@@ -1,9 +1,9 @@
 import { api } from "~/utils/api";
 import { type NextPage } from "next";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { LoadingPage } from "~/components/loading";
 import { useState } from "react";
-import Router from "next/router";
+//import Router from "next/router";
 
 type Inputs = {
   fullName: string
@@ -25,7 +25,7 @@ const RSVP: NextPage = () => {
         }
         else{
             setNoMatch(false); 
-            Router.push(`/RSVP/${formData.fullName}`);
+           // Router.push(`/RSVP/${formData.fullName}`);
         }
     })
 
