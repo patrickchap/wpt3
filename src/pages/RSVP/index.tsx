@@ -2,21 +2,11 @@ import { api } from "~/utils/api";
 import { type NextPage } from "next";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { LoadingPage } from "~/components/loading";
-import { SyntheticEvent, useState } from "react";
+import { useState } from "react";
 import Router from "next/router";
 
 type Inputs = {
   fullName: string
-}
-
-function onPromise<T>(promise: (event: SyntheticEvent) => Promise<T>) {
-  return (event: SyntheticEvent) => {
-    if (promise) {
-      promise(event).catch((error) => {
-        console.log("Unexpected error", error);
-      });
-    }
-  };
 }
 
 const RSVP: NextPage = () => {
@@ -48,7 +38,8 @@ const RSVP: NextPage = () => {
                 <LoadingPage />
             )}
             {!isLoading && (
-                <form onSubmit={onPromise(handleSubmit(onSubmit))}>
+                // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                <form onSubmit={handleSubmit(onSubmit)}>
                     <label htmlFor="fullname" className="text-xl font-bold text-primary">Find Your RSVP</label>
                     <input id="fullname" className="border-2 border-primary rounded-md p-2 mt-2 w-full" type="text" placeholder="Full Name"
                         {...register("fullName", { required: true })}
