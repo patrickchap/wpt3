@@ -6,7 +6,7 @@ export const exampleRouter = createTRPCRouter({
       }),
 
     create: publicProcedure
-    .mutation(async ({ctx}) => {
+    .mutation(({ctx}) => {
         const { req } = ctx;
         console.log("Request body:", req.body);
         return "test";
