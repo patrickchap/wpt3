@@ -8,7 +8,7 @@ export const exampleRouter = createTRPCRouter({
     create: publicProcedure
     .mutation(({ctx}) => {
         const { req } = ctx;
-        console.log("Request body:", req.body);
+        console.log("Request body:", req?.body);
         return "test";
     }),
 });
