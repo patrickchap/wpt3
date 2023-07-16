@@ -6,13 +6,17 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
-import { initTRPC, TRPCError} from "@trpc/server";
+import { initTRPC, TRPCError } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import superjson from "superjson";
 import { ZodError } from "zod";
 import { prisma } from "~/server/db";
-import { getAuth } from '@clerk/nextjs/server'
-import type { SignedInAuthObject,SignedOutAuthObject } from "@clerk/nextjs/server";
+import { getAuth } from "@clerk/nextjs/server";
+import type {
+  SignedInAuthObject,
+  SignedOutAuthObject,
+} from "@clerk/nextjs/server";
+import { NextApiRequest } from "next";
 
 interface AuthContext {
   auth: SignedInAuthObject | SignedOutAuthObject;
@@ -27,6 +31,11 @@ interface AuthContext {
 
 type CreateContextOptions = Record<string, never>;
 
+type customContextOptions = {
+    req: NextApiRequest | null;
+    auth: SignedInAuthObject | SignedOutAuthObject | null; 
+
+}
 /**
  * This helper generates the "internals" for a tRPC context. If you need to use it, you can export
  * it from here.
@@ -37,9 +46,11 @@ type CreateContextOptions = Record<string, never>;
  *
  * @see https://create.t3.gg/en/usage/trpc#-serverapitrpcts
  */
-const createInnerTRPCContext = (_opts: CreateContextOptions) => {
+export const createInnerTRPCContext = (opts: customContextOptions) => {
   return {
     prisma,
+    auth: opts.auth,
+    req: opts.req
   };
 };
 
@@ -50,15 +61,13 @@ const createInnerTRPCContext = (_opts: CreateContextOptions) => {
  * @see https://trpc.io/docs/context
  */
 export const createTRPCContext = (opts: CreateNextContextOptions) => {
- const user = getAuth(opts.req);
- const req = opts?.req;
-  return {
-    prisma,
+  const user = getAuth(opts.req);
+  const req = opts.req;
+  return createInnerTRPCContext({
     auth: user,
-    req 
-  };
+    req: req,
+  });
 };
-
 
 /**
  * 2. INITIALIZATION
@@ -85,14 +94,14 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
 // check if the user is signed in, otherwise throw a UNAUTHORIZED CODE
 const isAuthed = t.middleware(({ next, ctx }) => {
   if (!ctx.auth.userId) {
-    throw new TRPCError({ code: 'UNAUTHORIZED' })
+    throw new TRPCError({ code: "UNAUTHORIZED" });
   }
   return next({
     ctx: {
       auth: ctx.auth,
     },
-  })
-})
+  });
+});
 /**
  * 3. ROUTER & PROCEDURE (THE IMPORTANT BIT)
  *
@@ -116,4 +125,4 @@ export const createTRPCRouter = t.router;
  */
 export const publicProcedure = t.procedure;
 
-export const protectedProcedure = t.procedure.use(isAuthed)
+export const protectedProcedure = t.procedure.use(isAuthed);

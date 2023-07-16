@@ -1,10 +1,14 @@
-import type { NextPage } from "next";
+import type { GetServerSidePropsContext, GetStaticProps, GetStaticPropsContext, InferGetServerSidePropsType, NextPage } from "next";
 import { LoadingPage } from "~/components/loading";
 import { api } from "~/utils/api";
+import { generateSSGHelper } from "~/server/helpers/ssgHelper";
 
-const RSVPGuest: NextPage<{ fullName: string }> = ({ fullName }) => {
+    export default function RSVPGuest(
+    props: InferGetServerSidePropsType<typeof getStaticProps>,
+    ){
 
-    const { data, isLoading } = api.wedding.getGuestByGuestName.useQuery({fullName});
+    console.log(props.guestName);
+    const { data, isLoading } = api.wedding.getGuestByGuestName.useQuery({fullName: props.guestName});
 
     if (!data) return <div>404</div>;
 
@@ -14,11 +18,33 @@ const RSVPGuest: NextPage<{ fullName: string }> = ({ fullName }) => {
                 <LoadingPage />
             )}
             <h1>RSVP Page</h1>
-            <div>{ fullName }</div>
+            <div>{ props.guestName }</div>
         </>
     );
 };
 
-export default RSVPGuest; 
+    export async function getStaticProps(
+          context: GetStaticPropsContext<{ fullName: string }>,
+        ) {
+          const ssg = generateSSGHelper();
+        console.log("context params");
+        console.log(context.params?.fullName);
+
+        const guestName = context.params?.fullName as string;
+        console.log(guestName);
+        
+          await ssg.wedding.getGuestByGuestName.prefetch({fullName: guestName});
+
+          return {
+            props: {
+              trpcState: ssg.dehydrate(),
+              guestName,
+            },
+          };
+        };
 
 
+
+export const getStaticPaths = () => {
+  return { paths: [], fallback: "blocking" };
+};
