@@ -27,7 +27,7 @@ const RSVP: NextPage = () => {
         }
         else{
             setNoMatch(false); 
-            Router.push(`/RSVP/${formData.fullName}`);
+            void Router.push(`/RSVP/${formData.fullName}`);
         }
     }
     return (
