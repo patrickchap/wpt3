@@ -1,30 +1,22 @@
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure} from "~/server/api/trpc";
 
 
 export const weddingRouter = createTRPCRouter({
-    getGroupByGuestName: publicProcedure
-    .input(z.object({ fullName: z.string() }))
-    .query(async ({ctx, input}) => {
-        const guest = await ctx.prisma.guest.findUnique({
-        where: { fullname: input.fullName },
-        });
-        if (!guest) {
-            throw new Error("Guest not found");
-        }
-        const group = await ctx.prisma.group.findUnique({
-            where: { id: guest.groupId },
-            include: { guests: true },
-        });
 
-        if (!group) {
-            throw new Error("Group not found");
-        }
+    getAllGuests: publicProcedure
+        .query(async ({ctx}) => {
+            const allGuests = await ctx.prisma.guest.findMany();
+            const guests = allGuests.map(guest => guest.fullname.toLowerCase()); 
+            if (!guests || guests == undefined) {
+                throw new TRPCError({code: "NOT_FOUND", message: "No guests found"});
+            }
+            return {
+                guests,
+            }
+        }),
 
-        return {
-            group: group.guests,
-        }
-    }),
 
     getGuestByGuestName: publicProcedure
     .input(z.object({ fullName: z.string() }))
