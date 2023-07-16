@@ -34,7 +34,7 @@ const RSVP: NextPage = () => {
                 <LoadingPage />
             )}
             {!isLoading && (
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={() => handleSubmit(onSubmit)}>
                     <label htmlFor="fullname" className="text-xl font-bold text-primary">Find Your RSVP</label>
                     <input id="fullname" className="border-2 border-primary rounded-md p-2 mt-2 w-full" type="text" placeholder="Full Name"
                         {...register("fullName", { required: true })}
