@@ -3,6 +3,7 @@ import { type NextPage } from "next";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { LoadingPage } from "~/components/loading";
 import { useState } from "react";
+import Router from "next/router";
 
 type Inputs = {
   fullName: string
@@ -17,15 +18,17 @@ const RSVP: NextPage = () => {
   
     const { data, isLoading } = api.wedding.getAllGuests.useQuery();
     const [noMatch, setNoMatch] = useState(false); 
-    const onSubmit: SubmitHandler<Inputs> = (formData) => {
+    const onSubmit = handleSubmit( (formData) => {
+        console.log("on submit");
+        if(!data?.guests.includes(formData.fullName.toLowerCase().trim())){
+            setNoMatch(true); 
+        }
+        else{
+            setNoMatch(false); 
+            Router.push(`/RSVP/${formData.fullName}`);
+        }
+    })
 
-    if(!data?.guests.includes(formData.fullName.toLowerCase().trim())){
-       setNoMatch(true); 
-    }
-    else{
-       setNoMatch(false); 
-    }
-    }
     return (
         <div className="flex flex-col items-center">
             <h1 className="text-3xl font-bold mt-8 text-primary">RSVP</h1>
@@ -34,7 +37,7 @@ const RSVP: NextPage = () => {
                 <LoadingPage />
             )}
             {!isLoading && (
-                <form onSubmit={() => handleSubmit(onSubmit)}>
+                <form onSubmit={onSubmit}>
                     <label htmlFor="fullname" className="text-xl font-bold text-primary">Find Your RSVP</label>
                     <input id="fullname" className="border-2 border-primary rounded-md p-2 mt-2 w-full" type="text" placeholder="Full Name"
                         {...register("fullName", { required: true })}
