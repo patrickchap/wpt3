@@ -7,21 +7,21 @@ import { generateSSGHelper } from "~/server/helpers/ssgHelper";
     props: InferGetServerSidePropsType<typeof getStaticProps>,
     ){
 
-    console.log(props.guestName);
-    const { data, isLoading } = api.wedding.getGuestByGuestName.useQuery({fullName: props.guestName});
+        console.log(props.guestName);
+        const { data, isLoading } = api.wedding.getGuestByGuestName.useQuery({fullName: props.guestName});
 
-    if (!data) return <div>404</div>;
+        if (!data) return <div>404</div>;
 
-    return (
-        <>
-            {isLoading && (
-                <LoadingPage />
-            )}
-            <h1>RSVP Page</h1>
-            <div>{ props.guestName }</div>
-        </>
-    );
-};
+        return (
+            <>
+                {isLoading && (
+                    <LoadingPage />
+                )}
+                <h1>RSVP Page</h1>
+                <div>{ props.guestName }</div>
+            </>
+        );
+    }
 
     export async function getStaticProps(
           context: GetStaticPropsContext<{ fullName: string }>,
@@ -41,7 +41,7 @@ import { generateSSGHelper } from "~/server/helpers/ssgHelper";
               guestName,
             },
           };
-        };
+        }
 
 
 
