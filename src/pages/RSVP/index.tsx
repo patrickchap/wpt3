@@ -5,6 +5,7 @@ import { LoadingPage } from "~/components/loading";
 import { useState } from "react";
 import Router from "next/router";
 
+
 type Inputs = {
   fullName: string
 }

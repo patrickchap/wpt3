@@ -17,23 +17,7 @@ export const weddingRouter = createTRPCRouter({
             }
         }),
 
-    getGuestAndGroupByName: publicProcedure
-    .input(z.object({ fullName: z.string() }))
-    .query(async ({ctx, input}) => {
-        const guest = await ctx.prisma.guest.findUnique({
-            where: { fullname: input.fullName },
-            include: { group: true },
-        });
-        if (!guest) {
-            throw new Error("Guest not found");
-        }
-        return {
-            guest: guest,
-            group: guest.group,
-        }
-    }),
-
-    getGuestByGuestName: publicProcedure
+     getGuestByGuestName: publicProcedure
     .input(z.object({ fullName: z.string() }))
     .query(async ({ctx, input}) => {
         const guest = await ctx.prisma.guest.findUnique({
@@ -44,7 +28,6 @@ export const weddingRouter = createTRPCRouter({
         }
         return {
             guest: guest,
-            group: guest.groupId,
         }
      }),
 
