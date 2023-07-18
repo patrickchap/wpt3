@@ -20,7 +20,7 @@ const RSVPGuestSearch: NextPage<{ guestName: string }> = ({ guestName }) => {
         return <div className="flex flex-col items-center">Sorry, we can&lsquo;t find your name in our guest list. Please try again.</div>
     }
 
-    Router.push(`/RSVP/${guestName}`);
+    void Router.push(`/RSVP/${guestName}`);
 }
 
 const RSVP: NextPage = () => {
