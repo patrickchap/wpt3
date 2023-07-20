@@ -40,9 +40,8 @@ const RSVPGuestOrGroup = (
                 )}
                 {rsvpSelection == "guest" && (
                     <>
-                        <div className="flex flex-col items-center mt-8 w-96">
+                        <div className="flex flex-col items-center mt-8">
                             <RSVPUser {...data} />
-                            <h1>RSVP for {data.guest.fullname}</h1>
                             <button onClick={() => setRsvpSelection("")} className="bg-primary text-white rounded-md p-2 mt-2  w-96">Back</button>
                         </div>
                     </>
@@ -87,6 +86,15 @@ type FormValues = {
     }[]
 }
 
+type FormValuesGuest = {
+    guest: {
+        fullname: string,
+        mealselection: string,
+        songpreference: string,
+        response: string,
+        guestId: number,
+    }
+}
 const RSVPGroup: NextPage<{ groupId: number }> = ({ groupId }) => {
     const { data, isLoading } = api.wedding.getGroupByGroupId.useQuery({ groupId: groupId });
 
@@ -114,9 +122,7 @@ const RSVPGroup: NextPage<{ groupId: number }> = ({ groupId }) => {
     )
 }
 
-//const RSVPGuestSearch: NextPage<{ guestName: string }> = ({ guestName }) => {
 const RSVPForm: NextPage<{ formValues: FormValues }> = ({ formValues }) => {
-    //postRSVPGroup
     const { mutate, isLoading: isPosting } = api.wedding.postRSVPGroup.useMutation({
         onSuccess: () => {
             //void ctx.posts.getAll.invalidate();
@@ -154,7 +160,7 @@ const RSVPForm: NextPage<{ formValues: FormValues }> = ({ formValues }) => {
     return (
         <>
             <div className="flex flex-col items-center">
-                <h1 className="text-3xl font-bold mt-8 text-primary">RSVP Page</h1>
+                <h1 className="text-3xl font-bold mt-8 pb-10 text-primary">RSVP Page</h1>
                 <form onSubmit={handleSubmit(data => onSubmit(data))}>
                     {fields.map((item, index) => (
                         <div className="mb-4" key={item.id}>
@@ -186,7 +192,7 @@ const RSVPForm: NextPage<{ formValues: FormValues }> = ({ formValues }) => {
                             </div>
                         </div>
                     ))}
-                    <div className="flex flex-col items-center w-full">
+                    <div className="flex flex-col items-center w-full pt-6">
                         <input className="bg-secondary cursor-pointer text-white py-2 px-4 rounded w-96" type="submit" />
                     </div>
                 </form>
@@ -196,9 +202,76 @@ const RSVPForm: NextPage<{ formValues: FormValues }> = ({ formValues }) => {
 }
 
 const RSVPUser = (props: RSVPUserType) => {
+    const guest: FormValuesGuest = {
+        guest: {
+            fullname: props.guest.fullname,
+            mealselection: '',
+            songpreference: '',
+            response: 'Accept',
+            guestId: props.guest.id,
+        },
+    };
     return (
-        <div>Guest</div>
+        <RSVPGuestForm guestValues={guest}/>
     )
 }
 
+const RSVPGuestForm: NextPage<{guestValues: FormValuesGuest }> = ({ guestValues }) => {
+
+    const { register, control, handleSubmit } = useForm<FormValuesGuest>({
+        defaultValues: {
+            guest: guestValues.guest
+        }
+    });
+    const options = [
+        { value: 'Accept', label: 'Accept' },
+        { value: 'Decline', label: 'Decline' }
+    ];
+
+    const onSubmit: SubmitHandler<FormValuesGuest> = (formData) => {
+        console.log(formData);
+       // mutate({group : formData.group});
+    };
+
+    return (
+        <>
+            <div className="flex flex-col items-center">
+                <h1 className="text-3xl font-bold mt-8 text-primary pb-10">RSVP {guestValues.guest.fullname}</h1>
+                <form onSubmit={handleSubmit(data => onSubmit(data))}>
+                        <div className="mb-4">
+                            <div className="flex gap-8 column-3">
+                                <div>
+                                    <label htmlFor={`fullname`} className="text-gray-700 text-sm font-bold mb-2"> Guest Name</label>
+                                    <input id={`fullname`} {...register(`guest.fullname`)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                                </div>
+                                <div>
+                                    <label htmlFor={`guest.songpreference`} className="text-gray-700 text-sm font-bold mb-2"> Song Request</label>
+                                    <input id={`guest.songpreference`} {...register(`guest.songpreference`)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                                </div>
+                                <div>
+                                    <label htmlFor={`guest.response`} className="text-gray-700 text-sm font-bold mb-2">Response</label>
+                                    <Controller
+                                        name={`guest.response`}
+                                        control={control}
+                                        render={({ field }) => (
+                                            <select {...field} className="form-select cstm-form-select shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:ring-transparent focus:border-[#E5E7EB] focus:ring-0">
+                                                {options.map((option, idx) => (
+                                                    <option key={`${option.value}${idx}`} value={option.value}>
+                                                        {option.label}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        )}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    <div className="flex flex-col items-center w-full pt-6">
+                        <input className="bg-secondary cursor-pointer text-white py-2 px-4 rounded w-96" type="submit" />
+                    </div>
+                </form>
+            </div>
+        </>
+    )
+}
 export default RSVPGuestOrGroup;
