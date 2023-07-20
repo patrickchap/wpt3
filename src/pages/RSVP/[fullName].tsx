@@ -1,9 +1,10 @@
-import type { GetServerSidePropsContext, GetStaticProps, GetStaticPropsContext, InferGetServerSidePropsType, NextPage } from "next";
+import type { GetStaticPropsContext, InferGetServerSidePropsType, NextPage } from "next";
 import { LoadingPage } from "~/components/loading";
 import { api } from "~/utils/api";
 import { generateSSGHelper } from "~/server/helpers/ssgHelper";
 import type { RouterOutputs } from "~/utils/api";
 import { useState } from "react";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 
 const RSVPGuestOrGroup = (
     props: InferGetServerSidePropsType<typeof getStaticProps>,
@@ -13,8 +14,7 @@ const RSVPGuestOrGroup = (
     if (isLoading) {
         return <LoadingPage />;
     }
-    if (!data) return <div>404</div>;
-    if (data.guest.groupId != null) {
+    if (data?.guest.groupId != null) {
         return (
             <div className="flex flex-col items-center">
                 {rsvpSelection == "" && (
@@ -30,9 +30,9 @@ const RSVPGuestOrGroup = (
                 )}
                 {rsvpSelection == "group" && (
                     <>
-                        <div className="flex flex-col items-center mt-8 w-96">
+                        <div className="flex flex-col items-center mt-8">
                             <RSVPGroup groupId={data.guest.groupId} />
-                            <button onClick={() => setRsvpSelection("")} className="bg-primary text-white rounded-md p-2 mt-2 w-full">Back</button>
+                            <button onClick={() => setRsvpSelection("")} className="bg-primary text-white rounded-md p-2 mt-2 w-96">Back</button>
                         </div>
                     </>
                 )}
@@ -41,7 +41,7 @@ const RSVPGuestOrGroup = (
                         <div className="flex flex-col items-center mt-8 w-96">
                             <RSVPUser {...data} />
                             <h1>RSVP for {data.guest.fullname}</h1>
-                            <button onClick={() => setRsvpSelection("")} className="bg-primary text-white rounded-md p-2 mt-2 w-full">Back</button>
+                            <button onClick={() => setRsvpSelection("")} className="bg-primary text-white rounded-md p-2 mt-2  w-96">Back</button>
                         </div>
                     </>
                 )}
@@ -50,7 +50,7 @@ const RSVPGuestOrGroup = (
     }
     return (
         <>
-            <h1 className="text-3xl font-bold mt-8 text-primary w-full text-center">Hello {data.guest.fullname}!</h1>
+            <h1 className="text-3xl font-bold mt-8 text-primary w-full text-center">Hello {data?.guest.fullname}!</h1>
         </>
     );
 }
@@ -74,11 +74,102 @@ export async function getStaticProps(
 export const getStaticPaths = () => {
     return { paths: [], fallback: "blocking" };
 };
-const RSVPGroup: NextPage<{groupId: number}> = ({groupId}) => {
+
+type FormValues = {
+    group: {
+        fullname: string,
+        mealselection: string,
+        songpreference: string,
+        response: string,
+        guestId: number,
+    }[]
+}
+
+const RSVPGroup: NextPage<{ groupId: number }> = ({ groupId }) => {
+    const { data, isLoading } = api.wedding.getGroupByGroupId.useQuery({ groupId: groupId });
+
+    if (isLoading) {
+        return <LoadingPage />;
+    }
+
+    if (!data) return <div>404</div>;
+    const guests: FormValues = {
+        group: data.group.map((group) => ({
+            fullname: group.fullname,
+            mealselection: '',
+            songpreference: '',
+            response: 'Accept',
+            guestId: 0,
+        })),
+    };
+
     return (
         <>
-        <div>{groupId}</div>
-        <div>Group</div>
+            {!isLoading && (
+                <RSVPForm formValues={guests} />
+            )}
+        </>
+    )
+}
+
+//const RSVPGuestSearch: NextPage<{ guestName: string }> = ({ guestName }) => {
+const RSVPForm: NextPage<{ formValues: FormValues }> = ({ formValues }) => {
+
+    const { register, control, handleSubmit } = useForm<FormValues>({
+        defaultValues: {
+            group: formValues.group
+        }
+    });
+    const { fields } = useFieldArray<FormValues>({
+        control,
+        name: "group",
+        keyName: "id"
+
+    });
+    const options = [
+        { value: 'accept', label: 'Accept' },
+        { value: 'decline', label: 'Decline' }
+    ];
+    return (
+        <>
+            <div className="flex flex-col items-center">
+                <h1 className="text-3xl font-bold mt-8 text-primary">RSVP Page</h1>
+                <form onSubmit={handleSubmit(data => console.log(data))}>
+                    {fields.map((item, index) => (
+                        <div className="mb-4" key={item.id}>
+                            <div className="flex gap-8 column-3">
+                                <div>
+                                    <label htmlFor={`fullname${index}`} className="text-gray-700 text-sm font-bold mb-2"> Guest Name</label>
+                                    <input id={`fullname${index}`} {...register(`group.${index}.fullname`)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                                </div>
+                                <div>
+                                    <label htmlFor={`songpreference${index}`} className="text-gray-700 text-sm font-bold mb-2"> Song Request</label>
+                                    <input id={`songpreference${index}`} {...register(`group.${index}.songpreference`)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                                </div>
+                                <div>
+                                    <label htmlFor={`response${index}`} className="text-gray-700 text-sm font-bold mb-2">Response</label>
+                                    <Controller
+                                        name={`group.${index}.response`}
+                                        control={control}
+                                        render={({ field }) => (
+                                            <select {...field} className="form-select cstm-form-select shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:ring-transparent focus:border-[#E5E7EB] focus:ring-0">
+                                                {options.map((option, idx) => (
+                                                    <option key={`${option.value}${index}${idx}`} value={option.value}>
+                                                        {option.label}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        )}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                    <div className="flex flex-col items-center w-full">
+                        <input className="bg-secondary cursor-pointer text-white py-2 px-4 rounded w-96" type="submit" />
+                    </div>
+                </form>
+            </div>
         </>
     )
 }

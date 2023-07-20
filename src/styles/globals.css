@@ -15,3 +15,10 @@
 .top-image-overlay{
     text-align: center;
 }
+
+.cstm-form-select{
+    border-color: #E5E7EB;
+}
+.cstm-form-select:focus {
+  outline: none;
+}
