@@ -4,8 +4,10 @@ import { api } from "~/utils/api";
 import { generateSSGHelper } from "~/server/helpers/ssgHelper";
 import type { RouterOutputs } from "~/utils/api";
 import { useState } from "react";
-import { Controller, useFieldArray, useForm } from "react-hook-form";
+import { Controller, useFieldArray, useForm, type SubmitHandler } from "react-hook-form";
 
+
+type RSVPUserType = RouterOutputs["wedding"]["getGuestByGuestName"];
 const RSVPGuestOrGroup = (
     props: InferGetServerSidePropsType<typeof getStaticProps>,
 ) => {
@@ -99,7 +101,7 @@ const RSVPGroup: NextPage<{ groupId: number }> = ({ groupId }) => {
             mealselection: '',
             songpreference: '',
             response: 'Accept',
-            guestId: 0,
+            guestId: group.id,
         })),
     };
 
@@ -114,7 +116,20 @@ const RSVPGroup: NextPage<{ groupId: number }> = ({ groupId }) => {
 
 //const RSVPGuestSearch: NextPage<{ guestName: string }> = ({ guestName }) => {
 const RSVPForm: NextPage<{ formValues: FormValues }> = ({ formValues }) => {
-
+    //postRSVPGroup
+    const { mutate, isLoading: isPosting } = api.wedding.postRSVPGroup.useMutation({
+        onSuccess: () => {
+            //void ctx.posts.getAll.invalidate();
+        },
+        onError: (e) => {
+            const errorMessage = e.data?.zodError?.fieldErrors.content;
+            if (errorMessage && errorMessage[0]) {
+                //toast.error(errorMessage[0]);
+            } else {
+                //toast.error("Failed to post! Please try again later.");
+            }
+        },
+    });
     const { register, control, handleSubmit } = useForm<FormValues>({
         defaultValues: {
             group: formValues.group
@@ -127,14 +142,20 @@ const RSVPForm: NextPage<{ formValues: FormValues }> = ({ formValues }) => {
 
     });
     const options = [
-        { value: 'accept', label: 'Accept' },
-        { value: 'decline', label: 'Decline' }
+        { value: 'Accept', label: 'Accept' },
+        { value: 'Decline', label: 'Decline' }
     ];
+
+    const onSubmit: SubmitHandler<FormValues> = (formData) => {
+        console.log(formData);
+        mutate({group : formData.group});
+    };
+
     return (
         <>
             <div className="flex flex-col items-center">
                 <h1 className="text-3xl font-bold mt-8 text-primary">RSVP Page</h1>
-                <form onSubmit={handleSubmit(data => console.log(data))}>
+                <form onSubmit={handleSubmit(data => onSubmit(data))}>
                     {fields.map((item, index) => (
                         <div className="mb-4" key={item.id}>
                             <div className="flex gap-8 column-3">
@@ -174,7 +195,6 @@ const RSVPForm: NextPage<{ formValues: FormValues }> = ({ formValues }) => {
     )
 }
 
-type RSVPUserType = RouterOutputs["wedding"]["getGuestByGuestName"];
 const RSVPUser = (props: RSVPUserType) => {
     return (
         <div>Guest</div>
