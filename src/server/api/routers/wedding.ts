@@ -13,7 +13,7 @@ const FormValuesItemSchema = z.object({
 
 export const weddingRouter = createTRPCRouter({
 
-    postRSVPGroup: publicProcedure
+    postRSVP: publicProcedure
         .input(
             z.object({
                 group: z.array(FormValuesItemSchema),

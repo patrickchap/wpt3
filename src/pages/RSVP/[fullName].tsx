@@ -123,7 +123,7 @@ const RSVPGroup: NextPage<{ groupId: number }> = ({ groupId }) => {
 }
 
 const RSVPForm: NextPage<{ formValues: FormValues }> = ({ formValues }) => {
-    const { mutate, isLoading: isPosting } = api.wedding.postRSVPGroup.useMutation({
+    const { mutate, isLoading: isPosting } = api.wedding.postRSVP.useMutation({
         onSuccess: () => {
             //void ctx.posts.getAll.invalidate();
         },
@@ -218,6 +218,20 @@ const RSVPUser = (props: RSVPUserType) => {
 
 const RSVPGuestForm: NextPage<{guestValues: FormValuesGuest }> = ({ guestValues }) => {
 
+    const { mutate, isLoading: isPosting } = api.wedding.postRSVP.useMutation({
+        onSuccess: () => {
+            //void ctx.posts.getAll.invalidate();
+        },
+        onError: (e) => {
+            const errorMessage = e.data?.zodError?.fieldErrors.content;
+            if (errorMessage && errorMessage[0]) {
+                //toast.error(errorMessage[0]);
+            } else {
+                //toast.error("Failed to post! Please try again later.");
+            }
+        },
+    });
+
     const { register, control, handleSubmit } = useForm<FormValuesGuest>({
         defaultValues: {
             guest: guestValues.guest
@@ -230,7 +244,7 @@ const RSVPGuestForm: NextPage<{guestValues: FormValuesGuest }> = ({ guestValues 
 
     const onSubmit: SubmitHandler<FormValuesGuest> = (formData) => {
         console.log(formData);
-       // mutate({group : formData.group});
+        mutate({group : [formData.guest]});
     };
 
     return (
