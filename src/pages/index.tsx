@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Test from "~/components/TestComponent";
 export default function Home() {
   return (
     <>
@@ -8,6 +9,11 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
+        <div className="flex flex-col items-center">
+        <div className="w-2/3">
+            <Test title={"Out Story"} />
+        </div>
+        </div>
       </main>
     </>
   )

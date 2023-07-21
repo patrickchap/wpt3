@@ -7,17 +7,15 @@ export default function Header() {
     const [navbar, setNavbar] = useState(false);
     const location = useRouter();
     const showImageRoute = '/';
-
-    console.log("Navbar>>", navbar);
     return (
         <>
             {location.pathname === showImageRoute && (
                 <div className="top-image">
                     <div className="top-image-overlay">
-                        <h1>Patrick & Chantilly</h1>
-                        <h4>08.06.24</h4>
-                        <Link href='/rsvp'>
-                            <button>RSVP</button>
+                        <h1 className="text-3xl text-white p-3">Patrick&#39;s and Chantil&#39;s Wedding</h1>
+                        <h4 className="text-2xl text-white">....</h4>
+                        <Link href='/RSVP'>
+                            <button className="text-2xl text-white border-white border-2 rounded p-3 m-5">RSVP</button>
                         </Link>
                     </div>
                 </div>
@@ -80,12 +78,6 @@ export default function Header() {
                                     <Link href="/RSVP" onClick={() => setNavbar(!navbar)}
                                         className="block py-2 pr-4 pl-3 md:p-0 border-b border-gray-100 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:hover:bg-transparent md:hover:text-cyan-700 md:dark:hover:bg-transparent md:dark:hover:text-white">
                                         RSVP
-                                    </Link>
-                                </li>
-                                <li className="color-secondary">
-                                    <Link href="/our-story" onClick={() => setNavbar(!navbar)}
-                                        className="block py-2 pr-4 pl-3 md:p-0 border-b border-gray-100 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:hover:bg-transparent md:hover:text-cyan-700 md:dark:hover:bg-transparent md:dark:hover:text-white">
-                                        Our Story
                                     </Link>
                                 </li>
                                 <li className="color-secondary">
