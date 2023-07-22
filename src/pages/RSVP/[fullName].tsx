@@ -49,10 +49,16 @@ const RSVPGuestOrGroup = (
             </div>
         )
     }
+    if(!data){
+        return(
+            <div></div>
+        )
+    }
     return (
-        <>
-            <h1 className="text-3xl font-bold mt-8 text-primary w-full text-center">Hello {data?.guest.fullname}!</h1>
-        </>
+            <div className="flex flex-col items-center mt-8">
+                <RSVPUser {...data} />
+                <button onClick={() => setRsvpSelection("")} className="bg-primary text-white rounded-md p-2 mt-2  w-96">Back</button>
+            </div>
     );
 }
 
@@ -196,7 +202,7 @@ const RSVPGroupForm: NextPage<{ formValues: FormValues, submitter: string }> = (
                                     <input id={`songpreference${index}`} {...register(`group.${index}.songpreference`)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                                 </div>
                                 <div>
-                                   <label htmlFor={`response${index}`} className="text-gray-700 text-sm font-bold mb-2">Response</label>
+                                    <label htmlFor={`response${index}`} className="text-gray-700 text-sm font-bold mb-2">Response</label>
                                     <Controller
                                         name={`group.${index}.response`}
                                         control={control}

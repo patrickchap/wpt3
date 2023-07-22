@@ -32,8 +32,8 @@ model RSVP {
 model Guest {
   id       Int    @id @default(autoincrement())
   fullname String @unique
-  group    Group  @relation(fields: [groupId], references: [id])
-  groupId  Int
+  group    Group?  @relation(fields: [groupId], references: [id])
+  groupId  Int?
   RSVP     RSVP?
 
   @@index([groupId])

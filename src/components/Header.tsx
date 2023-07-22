@@ -69,49 +69,49 @@ export default function Header() {
                         >
                             <ul className="items-center justify-center space-y-8 md:flex md:space-x-6 md:space-y-0">
                                 <li className="color-secondary">
-                                    <Link href="/" onClick={() => setNavbar(!navbar)}
+                                    <Link href="/" onClick={() => setNavbar(false)}
                                         className="block py-2 pr-4 pl-3 md:p-0 border-b border-gray-100 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:hover:bg-transparent md:hover:text-cyan-700 md:dark:hover:bg-transparent md:dark:hover:text-white">
                                         Home
                                     </Link>
                                 </li>
                                 <li className="color-secondary">
-                                    <Link href="/RSVP" onClick={() => setNavbar(!navbar)}
+                                    <Link href="/RSVP" onClick={() => setNavbar(false)}
                                         className="block py-2 pr-4 pl-3 md:p-0 border-b border-gray-100 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:hover:bg-transparent md:hover:text-cyan-700 md:dark:hover:bg-transparent md:dark:hover:text-white">
                                         RSVP
                                     </Link>
                                 </li>
                                 <li className="color-secondary">
-                                    <Link href="/events" onClick={() => setNavbar(!navbar)}
+                                    <Link href="/events" onClick={() => setNavbar(false)}
                                         className="block py-2 pr-4 pl-3 md:p-0 border-b border-gray-100 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:hover:bg-transparent md:hover:text-cyan-700 md:dark:hover:bg-transparent md:dark:hover:text-white">
                                         Events
                                     </Link>
                                 </li>
                                 <li className="color-secondary">
-                                    <Link href="/photos" onClick={() => setNavbar(!navbar)}
+                                    <Link href="/photos" onClick={() => setNavbar(false)}
                                         className="block py-2 pr-4 pl-3 md:p-0 border-b border-gray-100 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:hover:bg-transparent md:hover:text-cyan-700 md:dark:hover:bg-transparent md:dark:hover:text-white">
                                         Photos
                                     </Link>
                                 </li>
                                 <li className="color-secondary">
-                                    <Link href="/wedding-party" onClick={() => setNavbar(!navbar)}
+                                    <Link href="/wedding-party" onClick={() => setNavbar(false)}
                                         className="block py-2 pr-4 pl-3 md:p-0 border-b border-gray-100 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:hover:bg-transparent md:hover:text-cyan-700 md:dark:hover:bg-transparent md:dark:hover:text-white">
                                         Wedding Party
                                     </Link>
                                 </li>
                                 <li className="color-secondary">
-                                    <Link href="/travel-and-lodging" onClick={() => setNavbar(!navbar)}
+                                    <Link href="/travel-and-lodging" onClick={() => setNavbar(false)}
                                         className="block py-2 pr-4 pl-3 md:p-0 border-b border-gray-100 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:hover:bg-transparent md:hover:text-cyan-700 md:dark:hover:bg-transparent md:dark:hover:text-white">
                                         Travel & Lodging
                                     </Link>
                                 </li>
                                 <li className="color-secondary">
-                                    <Link href="/things-to-do" onClick={() => setNavbar(!navbar)}
+                                    <Link href="/things-to-do" onClick={() => setNavbar(false)}
                                         className="block py-2 pr-4 pl-3 md:p-0 border-b border-gray-100 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:hover:bg-transparent md:hover:text-cyan-700 md:dark:hover:bg-transparent md:dark:hover:text-white">
                                         Things To Do
                                     </Link>
                                 </li>
                                 <li className="color-secondary">
-                                    <Link href="/registry" onClick={() => setNavbar(!navbar)}
+                                    <Link href="/registry" onClick={() => setNavbar(false)}
                                         className="block py-2 pr-4 pl-3 md:p-0 border-b border-gray-100 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:hover:bg-transparent md:hover:text-cyan-700 md:dark:hover:bg-transparent md:dark:hover:text-white">
                                         Registry
                                     </Link>
