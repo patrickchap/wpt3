@@ -183,21 +183,20 @@ const RSVPGroupForm: NextPage<{ formValues: FormValues, submitter: string }> = (
     return (
         <>
             <div className="flex flex-col items-center">
-                <h1 className="text-3xl font-bold mt-8 pb-10 text-primary">RSVP Page</h1>
+                <h1 className="text-3xl font-bold mt-8 pb-10 text-primary">RSVP for Group</h1>
                 <form onSubmit={handleSubmit(data => onSubmit(data))}>
                     {fields.map((item, index) => (
-                        <div className="mb-4" key={item.id}>
-                            <div className="flex gap-8 column-3">
-                                <div>
-                                    <label htmlFor={`fullname${index}`} className="text-gray-700 text-sm font-bold mb-2"> Guest Name</label>
-                                    <input id={`fullname${index}`} {...register(`group.${index}.fullname`)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                        <div className="mb-8" key={item.id}>
+                            <div className="grid grid-cols-3 gap-4">
+                                <div className="col-span-3">
+                                    <h4 className="text-lg font-bold">{item.fullname}</h4>
                                 </div>
-                                <div>
+                                <div className="md:col-span-2 col-span-3">
                                     <label htmlFor={`songpreference${index}`} className="text-gray-700 text-sm font-bold mb-2"> Song Request</label>
                                     <input id={`songpreference${index}`} {...register(`group.${index}.songpreference`)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                                 </div>
                                 <div>
-                                    <label htmlFor={`response${index}`} className="text-gray-700 text-sm font-bold mb-2">Response</label>
+                                   <label htmlFor={`response${index}`} className="text-gray-700 text-sm font-bold mb-2">Response</label>
                                     <Controller
                                         name={`group.${index}.response`}
                                         control={control}
@@ -213,6 +212,7 @@ const RSVPGroupForm: NextPage<{ formValues: FormValues, submitter: string }> = (
                                     />
                                 </div>
                             </div>
+                            <div className="border-b-2 mt-8 w-full"></div>
                         </div>
                     ))}
                     <div className="flex flex-col items-center w-full pt-6">
@@ -266,7 +266,7 @@ const RSVPGuestForm: NextPage<{ guestValues: FormValuesGuest }> = ({ guestValues
         { value: 'Decline', label: 'Decline' }
     ];
 
-    const [showThanks, setShowThanks] = useState(true);
+    const [showThanks, setShowThanks] = useState(false);
 
     const onSubmit: SubmitHandler<FormValuesGuest> = (formData) => {
         console.log(formData);
@@ -284,12 +284,11 @@ const RSVPGuestForm: NextPage<{ guestValues: FormValuesGuest }> = ({ guestValues
                 <h1 className="text-3xl font-bold mt-8 text-primary pb-10">RSVP {guestValues.guest.fullname}</h1>
                 <form onSubmit={handleSubmit(data => onSubmit(data))}>
                     <div className="mb-4">
-                        <div className="flex gap-8 column-3">
-                            <div>
-                                <label htmlFor={`fullname`} className="text-gray-700 text-sm font-bold mb-2"> Guest Name</label>
-                                <input id={`fullname`} {...register(`guest.fullname`)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                        <div className="grid grid-cols-3 gap-4">
+                            <div className="col-span-3">
+                                <h4 className="text-lg font-bold">{guestValues.guest.fullname}</h4>
                             </div>
-                            <div>
+                            <div className="md:col-span-2 col-span-3">
                                 <label htmlFor={`guest.songpreference`} className="text-gray-700 text-sm font-bold mb-2"> Song Request</label>
                                 <input id={`guest.songpreference`} {...register(`guest.songpreference`)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                             </div>
