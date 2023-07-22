@@ -2,7 +2,7 @@ import { type NextPage } from "next";
 import Image from "next/image";
 import { PageLayout } from "~/components/Layout";
 //https://via.placeholder.com/800x500
-let wp: { src: string, name: string, desc: string }[] = [
+const wp: { src: string, name: string, desc: string }[] = [
     { src: "/../public/images/300X300.png", name: "First Last", desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc iaculis magna in nulla interdum, at tincidunt nisl pretium. Duis molestie a metus et accumsan. Proin in lacus porta, sollicitudin tellus imperdiet, blandit velit. Aliquam vulputate turpis at lorem sagittis laoreet. Nunc ac diam et leo condimentum ornare." },
     { src: "/../public/images/300X300.png", name: "First Last", desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc iaculis magna in nulla interdum, at tincidunt nisl pretium. Duis molestie a metus et accumsan. Proin in lacus porta, sollicitudin tellus imperdiet, blandit velit. Aliquam vulputate turpis at lorem sagittis laoreet. Nunc ac diam et leo condimentum ornare." },
     { src: "/../public/images/300X300.png", name: "First Last", desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc iaculis magna in nulla interdum, at tincidunt nisl pretium. Duis molestie a metus et accumsan. Proin in lacus porta, sollicitudin tellus imperdiet, blandit velit. Aliquam vulputate turpis at lorem sagittis laoreet. Nunc ac diam et leo condimentum ornare." },
@@ -21,8 +21,8 @@ const WeddingParty = () => {
         <PageLayout>
             <h1 className="mt-8 text-3xl font-bold text-primary">Wedding Party</h1>
             <div className="grid grid-cols-4 gap-4 w-5/6">
-                {wp.map(w => (
-                    <Party src={w.src} name={w.name} desc={w.desc}/>
+                {wp.map((w, idx) => (
+                    <Party key={idx} src={w.src} name={w.name} desc={w.desc}/>
                 ))}
             </div>
         </PageLayout>
