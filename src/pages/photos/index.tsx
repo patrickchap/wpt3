@@ -1,18 +1,17 @@
 import { type NextPage } from "next";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import { PageLayout } from "~/components/Layout";
+import img from "/public/images/300X300.png";
 
-
-const wp: { src: string, alt: string }[] = [
-    { src: "/../public/images/300X300.png", alt: "alt img"},
-    { src: "/../public/images/300X300.png", alt: "alt img"},
-    { src: "/../public/images/300X300.png", alt: "alt img"},
-    { src: "/../public/images/300X300.png", alt: "alt img"},
-    { src: "/../public/images/300X300.png", alt: "alt img"},
-    { src: "/../public/images/300X300.png", alt: "alt img"},
-    { src: "/../public/images/300X300.png", alt: "alt img"},
-    { src: "/../public/images/300X300.png", alt: "alt img"},
-    { src: "/../public/images/300X300.png", alt: "alt img"},
+const wp: { src: StaticImageData, alt: string }[] = [
+    { src: img, alt: "alt img"},
+    { src: img, alt: "alt img"},
+    { src: img, alt: "alt img"},
+    { src: img, alt: "alt img"},
+    { src: img, alt: "alt img"},
+    { src: img, alt: "alt img"},
+    { src: img, alt: "alt img"},
+    { src: img, alt: "alt img"},
 ]
 
 const Photos = () => {
@@ -28,7 +27,7 @@ const Photos = () => {
     )
 }
 
-const MyImg: NextPage<{ src: string, alt: string}> = ({ src, alt }) => {
+const MyImg: NextPage<{ src: StaticImageData, alt: string}> = ({ src, alt }) => {
     return (
         <div className="flex flex-col pt-8 col-span-3 md:col-span-1">
             <div className="flex justify-center w-full">
