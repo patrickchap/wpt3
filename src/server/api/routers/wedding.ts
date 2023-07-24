@@ -44,11 +44,27 @@ export const weddingRouter = createTRPCRouter({
             }
         }),
 
+    getGuestAndGroupByGuestName: publicProcedure
+        .input(z.object({ fullName: z.string() }))
+        .query(async ({ ctx, input }) => {
+            const guest = await ctx.prisma.guest.findUnique({
+                where: { fullname: input.fullName },
+                include: {RSVP: true, group: {include: {guests: {include: {RSVP: true}}}}}
+            });
+            if (!guest) {
+                throw new Error("Guest not found");
+            }
+
+            return {
+                guest: guest,
+            }
+        }),
     getGuestByGuestName: publicProcedure
         .input(z.object({ fullName: z.string() }))
         .query(async ({ ctx, input }) => {
             const guest = await ctx.prisma.guest.findUnique({
                 where: { fullname: input.fullName },
+                include: {RSVP: true}
             });
             if (!guest) {
                 throw new Error("Guest not found");

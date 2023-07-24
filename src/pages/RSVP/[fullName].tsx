@@ -3,19 +3,21 @@ import { LoadingPage } from "~/components/loading";
 import { api } from "~/utils/api";
 import { generateSSGHelper } from "~/server/helpers/ssgHelper";
 import type { RouterOutputs } from "~/utils/api";
-import { useState } from "react";
+import { SetStateAction, useState, useEffect } from "react";
 import { Controller, useFieldArray, useForm, type SubmitHandler } from "react-hook-form";
 
 
 type RSVPUserType = RouterOutputs["wedding"]["getGuestByGuestName"];
+type RSVPUserAndGroup = RouterOutputs["wedding"]["getGuestAndGroupByGuestName"];
 const RSVPGuestOrGroup = (
     props: InferGetServerSidePropsType<typeof getStaticProps>,
 ) => {
     const [rsvpSelection, setRsvpSelection] = useState("")
-    const { data, isLoading } = api.wedding.getGuestByGuestName.useQuery({ fullName: props.guestName });
+    const { data, isLoading } = api.wedding.getGuestAndGroupByGuestName.useQuery({ fullName: props.guestName });
     if (isLoading) {
         return <LoadingPage />;
     }
+
     if (data?.guest.groupId != null) {
         return (
             <div className="flex flex-col items-center">
@@ -24,16 +26,16 @@ const RSVPGuestOrGroup = (
                         <h1 className="text-3xl font-bold mt-8 text-primary w-full text-center">Hello {data.guest.fullname}!</h1>
                         <div className="flex flex-col items-center mt-8 w-96">
                             <h2 className="text-xl font-bold mt-8 text-primary text-center">Please RSVP for your group here</h2>
-                            <button onClick={() => setRsvpSelection("group")} className="bg-primary text-white rounded-md p-2 mt-2 w-full">RSVP for Group</button>
+                            <RSVPSelectionButton setRsvpSelection={setRsvpSelection} isGuest={false} data={data} />
                             <h2 className="text-xl font-bold mt-8 text-primary text-center">Or RSVP For yourself Here</h2>
-                            <button onClick={() => setRsvpSelection("guest")} className="bg-primary text-white rounded-md p-2 mt-2 w-full">RSVP for just you</button>
+                            <RSVPSelectionButton setRsvpSelection={setRsvpSelection} isGuest={true} data={data} />
                         </div>
                     </>
                 )}
                 {rsvpSelection == "group" && (
                     <>
                         <div className="flex flex-col items-center mt-8">
-                            <RSVPGroup groupId={data.guest.groupId} submitter={data.guest.fullname} />
+                            <RSVPGroup data={data} submitter={data.guest.fullname} />
                             <button onClick={() => setRsvpSelection("")} className="bg-primary text-white rounded-md p-2 mt-2 w-96">Back</button>
                         </div>
                     </>
@@ -46,19 +48,33 @@ const RSVPGuestOrGroup = (
                         </div>
                     </>
                 )}
+                {rsvpSelection == "updateGuest" && (
+                    <>
+                        <div className="flex flex-col items-center mt-8">
+                            <h1>Update RSVP</h1>
+                        </div>
+                    </>
+                )}
+                {rsvpSelection == "updateGroup" && (
+                    <>
+                        <div className="flex flex-col items-center mt-8">
+                            <h1>Update Group RSVP</h1>
+                        </div>
+                    </>
+                )}
             </div>
         )
     }
-    if(!data){
-        return(
+    if (!data) {
+        return (
             <div></div>
         )
     }
     return (
-            <div className="flex flex-col items-center mt-8">
-                <RSVPUser {...data} />
-                <button onClick={() => setRsvpSelection("")} className="bg-primary text-white rounded-md p-2 mt-2  w-96">Back</button>
-            </div>
+        <div className="flex flex-col items-center mt-8">
+            <RSVPUser {...data} />
+            <button onClick={() => setRsvpSelection("")} className="bg-primary text-white rounded-md p-2 mt-2  w-96">Back</button>
+        </div>
     );
 }
 
@@ -82,7 +98,48 @@ export const getStaticPaths = () => {
     return { paths: [], fallback: "blocking" };
 };
 
-const RSVPThanks: NextPage<{ fullname: string, isGroup: boolean, group: string[] }> = ({ fullname, isGroup }) => {
+
+const RSVPSelectionButton: React.FC<{ setRsvpSelection: (value: SetStateAction<string>) => void, data: RSVPUserAndGroup, isGuest: boolean }> = ({ setRsvpSelection, data, isGuest }) => {
+    const [showUserUpdate, setShowUserUpdate] = useState(false);
+    const [showGroupUpdate, setShowGroupUpdate] = useState(false);
+    const [showGroupCreate, setShowGroupCreate] = useState(false);
+
+    useEffect(() => {
+        if (data && data.guest.group?.guests) {
+            const groupNotRSVP = data.guest.group.guests.filter(g => g.RSVP == null);
+            if (groupNotRSVP.length > 0) {
+                setShowGroupUpdate(true);
+            }
+            const groupRSVP = data.guest.group.guests.filter(g => g.RSVP != null);
+            if (groupRSVP.length > 0) {
+                setShowGroupCreate(true);
+            }
+        }
+            if (data.guest.RSVP) setShowUserUpdate(true);
+    }, [data]);
+
+
+
+
+    return (
+        <>
+            {isGuest && !showUserUpdate && (
+                <button onClick={() => setRsvpSelection("guest")} className="bg-primary text-white rounded-md p-2 mt-2 w-full">RSVP for Just You</button>
+            )}
+
+            {isGuest && showUserUpdate && (
+                <button onClick={() => setRsvpSelection("updateGuest")} className="bg-secondary text-white rounded-md p-2 mt-2 w-full">Update Your RSVP</button>
+            )}
+            {!isGuest && showGroupCreate && (
+                <button onClick={() => setRsvpSelection("group")} className="bg-primary text-white rounded-md p-2 mt-2 w-full">RSVP for Group</button>
+            )}
+            {!isGuest && showGroupUpdate && (
+                <button onClick={() => setRsvpSelection("updateGroup")} className="bg-secondary text-white rounded-md p-2 mt-2  w-96">Update RSVPs for Group</button>
+            )}
+        </>
+    )
+}
+const RSVPThanks: React.FC<{ fullname: string, isGroup: boolean, group: string[] }> = ({ fullname, isGroup }) => {
     return (
         <div className="flex flex-col items-center pt-6 pb-6">
             {isGroup ? (
@@ -115,16 +172,12 @@ type FormValuesGuest = {
         guestId: number,
     }
 }
-const RSVPGroup: NextPage<{ groupId: number, submitter: string }> = ({ groupId, submitter }) => {
-    const { data, isLoading } = api.wedding.getGroupByGroupId.useQuery({ groupId: groupId });
+const RSVPGroup: React.FC<{ data: RSVPUserAndGroup, submitter: string }> = ({ data, submitter }) => {
+    const group = data.guest.group?.guests.filter(g => g.RSVP == null);
 
-    if (isLoading) {
-        return <LoadingPage />;
-    }
-
-    if (!data) return <div>404</div>;
+    if (!group) return <div>404</div>;
     const guests: FormValues = {
-        group: data.group.map((group) => ({
+        group: group.map((group) => ({
             fullname: group.fullname,
             mealselection: '',
             songpreference: '',
@@ -135,14 +188,12 @@ const RSVPGroup: NextPage<{ groupId: number, submitter: string }> = ({ groupId, 
 
     return (
         <>
-            {!isLoading && (
-                <RSVPGroupForm formValues={guests} submitter={submitter} />
-            )}
+            <RSVPGroupForm formValues={guests} submitter={submitter} />
         </>
     )
 }
 
-const RSVPGroupForm: NextPage<{ formValues: FormValues, submitter: string }> = ({ formValues, submitter }) => {
+const RSVPGroupForm: React.FC<{ formValues: FormValues, submitter: string }> = ({ formValues, submitter }) => {
     const { mutate, isLoading: isPosting } = api.wedding.postRSVP.useMutation({
         onSuccess: () => {
             //void ctx.posts.getAll.invalidate();
@@ -245,7 +296,7 @@ const RSVPUser = (props: RSVPUserType) => {
     )
 }
 
-const RSVPGuestForm: NextPage<{ guestValues: FormValuesGuest }> = ({ guestValues }) => {
+const RSVPGuestForm: React.FC<{ guestValues: FormValuesGuest }> = ({ guestValues }) => {
 
     const { mutate, isLoading: isPosting } = api.wedding.postRSVP.useMutation({
         onSuccess: () => {
