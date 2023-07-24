@@ -105,14 +105,17 @@ const RSVPSelectionButton: React.FC<{ setRsvpSelection: (value: SetStateAction<s
     const [showGroupCreate, setShowGroupCreate] = useState(false);
 
     useEffect(() => {
+    
         if (data && data.guest.group?.guests) {
             const groupNotRSVP = data.guest.group.guests.filter(g => g.RSVP == null);
+            console.log("gnr", groupNotRSVP);
             if (groupNotRSVP.length > 0) {
-                setShowGroupUpdate(true);
+                setShowGroupCreate(true);
             }
             const groupRSVP = data.guest.group.guests.filter(g => g.RSVP != null);
+            console.log("gp", groupRSVP);
             if (groupRSVP.length > 0) {
-                setShowGroupCreate(true);
+                setShowGroupUpdate(true);
             }
         }
             if (data.guest.RSVP) setShowUserUpdate(true);
