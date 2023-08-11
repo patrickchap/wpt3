@@ -4,7 +4,7 @@
 @tailwind utilities;
 
 .top-image{
-    background: url(../../public/images/IMG_5216.jpeg) no-repeat center center;
+    background:linear-gradient( RGBA(0, 0, 0, 0.3), RGBA(0, 0, 0, 0.3)), url(../../public/images/IMG_5216.jpeg) no-repeat center center;
     background-size: cover;
     height: 55vh;
     display: flex;
