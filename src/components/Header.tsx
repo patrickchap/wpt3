@@ -13,9 +13,9 @@ export default function Header() {
                 <div className="top-image">
                     <div className="top-image-overlay">
                         <h1 className="text-3xl text-white p-3">Patrick&#39;s and Chantil&#39;s Wedding</h1>
-                        <h4 className="text-2xl text-white">....</h4>
+                        <h4 className="text-2xl text-white">08/09/2024</h4>
                         <Link href='/RSVP'>
-                            <button className="text-2xl text-white border-white border-2 rounded p-3 m-5">RSVP</button>
+                            <button className="text-2xl text-white border-white border-2 rounded p-3 m-5 hidden">RSVP</button>
                         </Link>
                     </div>
                 </div>

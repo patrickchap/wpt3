@@ -59,6 +59,7 @@ const RSVPGuestOrGroup = (
                     <>
                         <div className="flex flex-col items-center mt-8">
                             <h1>Update Group RSVP</h1>
+                            <UpdateRSVPGroup data={data} submitter={data.guest.fullname} />
                         </div>
                     </>
                 )}
@@ -158,6 +159,7 @@ const RSVPThanks: React.FC<{ fullname: string, isGroup: boolean, group: string[]
 
 type FormValues = {
     group: {
+        id: number,
         fullname: string,
         mealselection: string,
         songpreference: string,
@@ -168,6 +170,7 @@ type FormValues = {
 
 type FormValuesGuest = {
     guest: {
+        id: number,
         fullname: string,
         mealselection: string,
         songpreference: string,
@@ -175,12 +178,36 @@ type FormValuesGuest = {
         guestId: number,
     }
 }
+
+const UpdateRSVPGroup: React.FC<{ data: RSVPUserAndGroup, submitter: string }> = ({ data, submitter }) => {
+    const group = data.guest.group?.guests.filter(g => g.RSVP != null);
+
+    if (!group) return <div>404</div>;
+    const guests: FormValues = {
+        group: group.map((guest) => ({
+            id: guest.RSVP?.id == undefined ? -1 : guest.RSVP?.id,
+            fullname: guest.fullname,
+            mealselection: guest.RSVP?.mealselection == null ? '' : guest.RSVP?.mealselection,
+            songpreference: guest.RSVP?.songpreference == null ? '' : guest.RSVP?.songpreference,
+            response: guest.RSVP?.responce == true ? "Accept" : "Decline",
+            guestId: guest.id
+        })),
+    };
+
+    return (
+        <>
+            <RSVPGroupForm formValues={guests} submitter={submitter} isUpdate={true} />
+        </>
+    )
+}
+
 const RSVPGroup: React.FC<{ data: RSVPUserAndGroup, submitter: string }> = ({ data, submitter }) => {
     const group = data.guest.group?.guests.filter(g => g.RSVP == null);
 
     if (!group) return <div>404</div>;
     const guests: FormValues = {
         group: group.map((group) => ({
+            id: -1,
             fullname: group.fullname,
             mealselection: '',
             songpreference: '',
@@ -191,12 +218,26 @@ const RSVPGroup: React.FC<{ data: RSVPUserAndGroup, submitter: string }> = ({ da
 
     return (
         <>
-            <RSVPGroupForm formValues={guests} submitter={submitter} />
+            <RSVPGroupForm formValues={guests} submitter={submitter} isUpdate={false}/>
         </>
     )
 }
 
-const RSVPGroupForm: React.FC<{ formValues: FormValues, submitter: string }> = ({ formValues, submitter }) => {
+const RSVPGroupForm: React.FC<{ formValues: FormValues, submitter: string, isUpdate: boolean}> = ({ formValues, submitter, isUpdate }) => {
+    const { mutate: update, isLoading: isUpdating } = api.wedding.updateRSVP.useMutation({
+        onSuccess: () => {
+            //void ctx.posts.getAll.invalidate();
+            setShowThanks(true)
+        },
+        onError: (e) => {
+            const errorMessage = e.data?.zodError?.fieldErrors.content;
+            if (errorMessage && errorMessage[0]) {
+                //toast.error(errorMessage[0]);
+            } else {
+                //toast.error("Failed to post! Please try again later.");
+            }
+        },
+    });
     const { mutate, isLoading: isPosting } = api.wedding.postRSVP.useMutation({
         onSuccess: () => {
             //void ctx.posts.getAll.invalidate();
@@ -230,8 +271,13 @@ const RSVPGroupForm: React.FC<{ formValues: FormValues, submitter: string }> = (
     const [showThanks, setShowThanks] = useState(false)
 
     const onSubmit: SubmitHandler<FormValues> = (formData) => {
-        console.log(formData);
-        mutate({ group: formData.group });
+        if(isUpdate){
+            console.log("updating group: ", formData.group);
+            update({group: formData.group});
+        }
+        if(!isUpdate){
+            mutate({ group: formData.group });
+        }
     };
 
     if (showThanks) {
@@ -284,9 +330,27 @@ const RSVPGroupForm: React.FC<{ formValues: FormValues, submitter: string }> = (
     )
 }
 
+const UpdateRSVPUser = (props: RSVPUserType) => {
+    const guest: FormValuesGuest = {
+        guest: {
+            id: props.guest.RSVP?.id == null ? -1 : props.guest.RSVP?.id,
+            fullname: props.guest.fullname,
+            mealselection: props.guest.RSVP?.mealselection == null ? '' : props.guest.RSVP?.mealselection,
+            songpreference: props.guest.RSVP?.songpreference == null ? '' : props.guest.RSVP?.songpreference,
+            response: props.guest.RSVP?.responce == true ? 'Accept' : 'Decline',
+            guestId: props.guest.id,
+        },
+    };
+    return (
+        <RSVPGuestForm guestValues={guest} isUpdate={true} />
+    )
+
+}
+
 const RSVPUser = (props: RSVPUserType) => {
     const guest: FormValuesGuest = {
         guest: {
+            id: -1,
             fullname: props.guest.fullname,
             mealselection: '',
             songpreference: '',
@@ -295,12 +359,27 @@ const RSVPUser = (props: RSVPUserType) => {
         },
     };
     return (
-        <RSVPGuestForm guestValues={guest} />
+        <RSVPGuestForm guestValues={guest} isUpdate={false}/>
     )
 }
 
-const RSVPGuestForm: React.FC<{ guestValues: FormValuesGuest }> = ({ guestValues }) => {
 
+const RSVPGuestForm: React.FC<{ guestValues: FormValuesGuest, isUpdate: boolean }> = ({ guestValues, isUpdate }) => {
+
+    const { mutate: update, isLoading: isUpdating } = api.wedding.updateRSVP.useMutation({
+        onSuccess: () => {
+            //void ctx.posts.getAll.invalidate();
+            setShowThanks(true)
+        },
+        onError: (e) => {
+            const errorMessage = e.data?.zodError?.fieldErrors.content;
+            if (errorMessage && errorMessage[0]) {
+                //toast.error(errorMessage[0]);
+            } else {
+                //toast.error("Failed to post! Please try again later.");
+            }
+        },
+    });
     const { mutate, isLoading: isPosting } = api.wedding.postRSVP.useMutation({
         onSuccess: () => {
             //void ctx.posts.getAll.invalidate();
@@ -329,8 +408,12 @@ const RSVPGuestForm: React.FC<{ guestValues: FormValuesGuest }> = ({ guestValues
     const [showThanks, setShowThanks] = useState(false);
 
     const onSubmit: SubmitHandler<FormValuesGuest> = (formData) => {
-        console.log(formData);
-        mutate({ group: [formData.guest] });
+        if(isUpdate){
+            update({ group: [formData.guest] });
+        }
+        if(!isUpdate){
+            mutate({ group: [formData.guest] });
+        }
     };
 
     if (showThanks) {

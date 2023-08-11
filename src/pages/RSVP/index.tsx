@@ -51,7 +51,7 @@ const RSVP: NextPage = () => {
                     />
                     <input
                         type="submit"
-                        className="mt-2 w-full rounded-md bg-primary p-2 text-white"
+                        className="cursor-pointer mt-2 w-full rounded-md bg-primary p-2 text-white"
                     />
                 </form>
                 {guestName && <RSVPGuestSearch guestName={guestName} />}
