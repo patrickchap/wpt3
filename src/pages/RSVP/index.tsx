@@ -4,6 +4,7 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import { LoadingPage } from "~/components/loading";
 import { useState } from "react";
 import Router from "next/router";
+import Working from "~/components/working";
 
 type Inputs = {
     fullName: string;
@@ -34,6 +35,10 @@ const RSVP: NextPage = () => {
     const onSubmit: SubmitHandler<Inputs> = (formData) => {
         setUserName(formData.fullName);
     };
+    const isUpdating = process.env.NEXT_PUBLIC_IS_UPDATING;
+    if(isUpdating){
+        return <Working />
+    }
     return (
         <div className="flex flex-col items-center">
             <h1 className="mt-8 text-3xl font-bold text-primary">RSVP</h1>

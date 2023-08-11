@@ -2,6 +2,7 @@ import { type NextPage } from "next";
 import Image, { StaticImageData } from "next/image";
 import { PageLayout } from "~/components/Layout";
 import img from "/public/images/300X300.png";
+import Working from "~/components/working";
 
 const wp: { src: StaticImageData, name: string, desc: string }[] = [
     { src: img , name: "First Last", desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc iaculis magna in nulla interdum, at tincidunt nisl pretium. Duis molestie a metus et accumsan. Proin in lacus porta, sollicitudin tellus imperdiet, blandit velit. Aliquam vulputate turpis at lorem sagittis laoreet. Nunc ac diam et leo condimentum ornare." },
@@ -18,6 +19,10 @@ const wp: { src: StaticImageData, name: string, desc: string }[] = [
 
 
 const WeddingParty = () => {
+    const isUpdating = process.env.NEXT_PUBLIC_IS_UPDATING;
+    if (isUpdating) {
+        return <Working />
+    }
     return (
         <PageLayout>
             <h1 className="mt-8 text-3xl font-bold text-primary">Wedding Party</h1>

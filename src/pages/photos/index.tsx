@@ -2,6 +2,7 @@ import { type NextPage } from "next";
 import Image, { StaticImageData } from "next/image";
 import { PageLayout } from "~/components/Layout";
 import img from "/public/images/300X300.png";
+import Working from "~/components/working";
 
 const wp: { src: StaticImageData, alt: string }[] = [
     { src: img, alt: "alt img"},
@@ -15,6 +16,11 @@ const wp: { src: StaticImageData, alt: string }[] = [
 ]
 
 const Photos = () => {
+    const isUpdating = process.env.NEXT_PUBLIC_IS_UPDATING;
+    if (isUpdating) {
+        return <Working />
+    }
+
     return (
         <PageLayout>
             <h1 className="mt-10 text-3xl font-bold text-primary">Photos</h1>
