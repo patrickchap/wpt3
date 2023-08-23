@@ -22,3 +22,24 @@
 .cstm-form-select:focus {
   outline: none;
 }
+
+.section-blue{
+    background-color: rgba(130, 194, 191, 0.3);
+}
+
+.slick-prev {
+  left: -52px !important;
+}
+.slick-next:before,
+.slick-prev:before {
+  content: "" !important;
+}
+.next-slick-arrow,
+.prev-slick-arrow {
+  color: #000000;
+  font-size: 45px;
+}
+
+.h-70vh{
+    height: 70vh;
+}

@@ -5,7 +5,7 @@ export default function Home() {
     <>
       <Head>
         <title>P & C Wedding</title>
-        <meta name="description" content="Patrick & ChantiPatrick & Chantill" />
+        <meta name="description" content="Patrick & Chantil" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
