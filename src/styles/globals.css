@@ -3,6 +3,15 @@
 @tailwind components;
 @tailwind utilities;
 
+.vertical-timeline::before {
+  background: var(--secondary-color) !important; 
+  border-width: 1px !important;
+}
+
+.img-darker{
+    filter: brightness(0.1);
+}
+
 .top-image{
     background:linear-gradient( RGBA(0, 0, 0, 0.3), RGBA(0, 0, 0, 0.3)), url(../../public/images/IMG_5216.jpeg) no-repeat center center;
     background-size: cover;
