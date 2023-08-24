@@ -25,7 +25,9 @@ export default function ThingsToDo() {
             {
                 breakpoint: 768, // Example breakpoint for smaller screens
                 settings: {
-                    slidesToShow: 1, // Change to 1 slide for smaller screens
+                    slidesToShow: 1, 
+                    slidesToScroll: 1,
+                    arrows: false
                 },
             },
         ],
@@ -85,16 +87,16 @@ export default function ThingsToDo() {
                 <h1 className="mt-8 text-3xl font-bold text-primary text-center mb-8">Hikes</h1>
                 <Slider {...settings}>
                     <div>
-                        <Card title="Eagle Rock Hiking Trail" description="Generally considered a moderately challenging route, it takes an average of 26 min to complete." location="https://www.alltrails.com/trail/us/california/eagle-rock-trail--2"  isTrail={true}/>
+                        <Card title="Eagle Rock Hiking Trail" description="Generally considered a moderately challenging route, it takes an average of 26 min to complete." location="https://www.alltrails.com/trail/us/california/eagle-rock-trail--2" isTrail={true} />
                     </div>
                     <div>
-                        <Card title="Tahoe East Shore Trail" description="The trail near Incline Village-Crystal Bay, Nevada is an easy 2.6-mile point-to-point route, with an average completion time of 55 minutes." location="https://www.alltrails.com/trail/us/nevada/tahoe-east-shore-trail" isTrail={true}/>
+                        <Card title="Tahoe East Shore Trail" description="The trail near Incline Village-Crystal Bay, Nevada is an easy 2.6-mile point-to-point route, with an average completion time of 55 minutes." location="https://www.alltrails.com/trail/us/nevada/tahoe-east-shore-trail" isTrail={true} />
                     </div>
                     <div>
-                        <Card title="Cascade Falls Trail" description="The trail near South Lake Tahoe, California is a moderately challenging 1.3-mile out-and-back route, with an average completion time of 35 minutes." location="https://www.alltrails.com/trail/us/california/cascade-falls" isTrail={true}/>
+                        <Card title="Cascade Falls Trail" description="The trail near South Lake Tahoe, California is a moderately challenging 1.3-mile out-and-back route, with an average completion time of 35 minutes." location="https://www.alltrails.com/trail/us/california/cascade-falls" isTrail={true} />
                     </div>
                     <div>
-                        <Card title="Olympic Village via Olympic Valley Bike Trail" description="The trail near Olympic Valley, California is an easy 2.2-mile point-to-point route, with an average completion time of 42 minutes." location="https://www.alltrails.com/trail/us/california/olympic-village-via-olympic-valley-bike-trail" isTrail={true}/>
+                        <Card title="Olympic Village via Olympic Valley Bike Trail" description="The trail near Olympic Valley, California is an easy 2.2-mile point-to-point route, with an average completion time of 42 minutes." location="https://www.alltrails.com/trail/us/california/olympic-village-via-olympic-valley-bike-trail" isTrail={true} />
                     </div>
                 </Slider>
             </section>
@@ -113,7 +115,7 @@ const Card: React.FC<{ title: string, description: string, location: string, isT
             {isTrail && (
                 <p className="text-gray-500 absolute bottom-10">
                     <a href={location} target="_blank" rel="noopener noreferrer">
-                       View Hike 
+                        View Hike
                     </a>
                 </p>)}
             {!isTrail && (
