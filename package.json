@@ -60,6 +60,6 @@
     "initVersion": "7.15.0"
   },
   "engines": {
-    "node": "20.x"
+    "node": "18.x"
   }
 }
