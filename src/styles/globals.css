@@ -52,3 +52,9 @@
 .h-70vh{
     height: 70vh;
 }
+
+.cstm-img{
+    width: 117px;
+    height: 117px;
+    object-fit: cover;
+}

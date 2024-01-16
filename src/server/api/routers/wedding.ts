@@ -1,6 +1,6 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, publicProcedure, protectedProcedure } from "~/server/api/trpc";
 
 const FormValuesUpdateItemSchema = z.object({
     id: z.number(),
@@ -9,6 +9,12 @@ const FormValuesUpdateItemSchema = z.object({
     songpreference: z.string(),
     response: z.string(),
     guestId: z.number(),
+});
+
+const FormValuesGuestsSchema = z.object({
+    fullname: z.string(),
+    group: z.string(),
+    id: z.number().nullish(),
 });
 
 const FormValuesItemSchema = z.object({
@@ -21,6 +27,44 @@ const FormValuesItemSchema = z.object({
 });
 
 export const weddingRouter = createTRPCRouter({
+
+postGuests: protectedProcedure
+    .input(
+        z.object({
+            guests: z.array(FormValuesGuestsSchema),
+        })
+    )
+    .mutation(async ({ ctx, input }) => {
+
+        const groups = await ctx.prisma.group.findMany();
+        const createGuests = input.guests.map(async (guest) => {
+            let group = groups.find((group) => group.groupname === guest.group);
+            if (!group) {
+                group = await ctx.prisma.group.create({
+                    data: {
+                        groupname: guest.group,
+                    },
+                });
+            }
+            return {
+                fullname: guest.fullname,
+                groupId: group ? group.id : null, 
+            };
+        });
+
+        const resolvedGuests = await Promise.all(createGuests);
+
+
+        const guests = await ctx.prisma.guest.createMany({
+            data: resolvedGuests, 
+        });
+        console.log("guests");
+        console.log(guests);
+
+        return guests;
+    }),
+
+
 
     updateRSVP: publicProcedure
         .input(
@@ -84,15 +128,23 @@ export const weddingRouter = createTRPCRouter({
             }
         }),
 
-    getAllGuests: publicProcedure
+    getAllGuests: protectedProcedure
         .query(async ({ ctx }) => {
-            const allGuests = await ctx.prisma.guest.findMany();
-            const guests = allGuests.map(guest => guest.fullname.toLowerCase());
-            if (!guests || guests == undefined) {
-                throw new TRPCError({ code: "NOT_FOUND", message: "No guests found" });
+            const allGuests = await ctx.prisma.guest.findMany({
+                include: { group: true }
+            });
+            let guestData = allGuests.map(guest => ({
+                fullname: guest.fullname,
+                group: guest.group?.groupname ?? "",
+                id: guest.id
+            }));
+
+
+            if (!guestData || guestData == undefined) {
+                guestData = [{ fullname: "", group: "", id: -1 }]
             }
             return {
-                guests,
+                guestData,
             }
         }),
 

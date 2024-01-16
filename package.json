@@ -11,6 +11,10 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^4.21.14",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.14.9",
+    "@mui/material": "^5.14.10",
     "@prisma/client": "^5.1.1",
     "@t3-oss/env-nextjs": "^0.3.1",
     "@tanstack/react-query": "^4.29.7",
@@ -21,6 +25,7 @@
     "@types/react-vertical-timeline-component": "^3.3.3",
     "flowbite": "^1.7.0",
     "flowbite-react": "^0.4.11",
+    "material-react-table": "^1.14.0",
     "next": "^13.4.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -29,6 +34,7 @@
     "react-vertical-timeline-component": "^3.6.0",
     "slick-carousel": "^1.8.1",
     "superjson": "1.12.2",
+    "xlsx": "^0.18.5",
     "zod": "^3.21.4"
   },
   "devDependencies": {
