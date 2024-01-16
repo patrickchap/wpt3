@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import React, { ChangeEvent, useCallback, useMemo, useState } from 'react';
 import * as XLSX from 'xlsx';
 import { api } from "~/utils/api";
@@ -34,7 +37,6 @@ interface TableProps {
 
 const GuestTable: React.FC<TableProps> = ({ allGuests }) => {
     const [tableData, setTableData] = useState<Guest[]>(allGuests);
-    console.log(tableData);
     const [createModalOpen, setCreateModalOpen] = useState(false);
     const [uploadModalOpen, setUploadModalOpen] = useState(false);
     const [validationErrors, setValidationErrors] = useState<{
@@ -69,7 +71,7 @@ const GuestTable: React.FC<TableProps> = ({ allGuests }) => {
         },
     });
 
-    const handleUpload = async (file: File) => {
+    const handleUpload = (file: File) => {
         if (!file) {
             alert('Please select a file to upload.');
             return;
@@ -98,7 +100,7 @@ const GuestTable: React.FC<TableProps> = ({ allGuests }) => {
         setTableData([...tableData]);
     };
     const handleSaveRowEdits: MaterialReactTableProps<Guest>['onEditingRowSave'] =
-        async ({ exitEditingMode, row, values }) => {
+         ({ exitEditingMode, row, values }) => {
             if (!Object.keys(validationErrors).length) {
                 tableData[row.index] = values;
                 //send/receive api updates here, then refetch or update local table data for re-render
@@ -110,6 +112,7 @@ const GuestTable: React.FC<TableProps> = ({ allGuests }) => {
     const handleDeleteRow = useCallback(
         (row: MRT_Row<Guest>) => {
             if (
+                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                 !confirm(`Are you sure you want to delete ${row.getValue('firstName')}`)
             ) {
                 return;
@@ -252,6 +255,7 @@ interface ModelProps {
 }
 
 export const CreateNewGuestModal: React.FC<ModelProps> = ({ open, columns, onClose, onSubmit }) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const [values, setValues] = useState<any>(() =>
         columns.reduce((acc, column) => {
             acc[column.accessorKey ?? ''] = '';
