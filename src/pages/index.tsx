@@ -1,5 +1,4 @@
 import Head from "next/head";
-import Test from "~/components/TestComponent";
 export default function Home() {
   return (
     <>

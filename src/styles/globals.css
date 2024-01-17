@@ -58,3 +58,7 @@
     height: 117px;
     object-fit: cover;
 }
+
+.mt0{
+    margin-top: 0px !important;
+}
