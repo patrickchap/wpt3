@@ -7,14 +7,11 @@ import party from "/public/images/MUSIC.svg";
 
 export default function Events() {
   return (
-    <div className="">
-      <div className="">
-        <h1 className="mb-8 mt-8 text-center text-3xl font-bold text-primary">
-          Events
-        </h1>
+    <main>
+
+        <h1 className="mb-8 mt-8 text-center text-3xl font-bold text-primary">Events</h1>
         <Timeline />
-      </div>
-    </div>
+    </main>
   );
 }
 

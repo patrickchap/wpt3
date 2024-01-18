@@ -1,15 +1,16 @@
-import { PageLayout } from "~/components/Layout";
 import Link from 'next/link';
+import { PageLayout } from '~/components/Layout';
 
 export default function TravelAndLodging() {
     return (
         <div>
-            <PageLayout>
+            <>
                 {/* The Venue */}
-                <section className="py-2">
+                <PageLayout>
+                <section className="">
                     <div className="container mx-auto">
-                        <h1 className="mt-8 text-3xl font-bold text-primary text-center mb-8">Venue</h1>
                         <div className="flex flex-col items-center justify-center -mx-4 w-full">
+                            <h1 className="mb-8 mt-8 text-center text-3xl font-bold text-primary">Venue</h1>
                             <p className="text-gray-700 text-center w-3/5 text-xl">
                                 Palisades is a beautiful venue nestled in Olympic Valley, offering breathtaking views of the surrounding mountains.
                                 With its charming atmosphere and stunning vistas, it&lsquo;s the perfect place for our special day. Looking to make the most of your Tahoe stay? Explore some of our favorite activities and must-visit sites for an exceptional experience <Link href="/things-to-do" className="cursor-pointer text-lg text-primary">here</Link>.
@@ -54,7 +55,8 @@ export default function TravelAndLodging() {
                         </div>
                     </div>
                 </section>
-            </PageLayout>
+                </PageLayout>
+            </>
         </div>
     )
 }

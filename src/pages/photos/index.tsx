@@ -1,6 +1,5 @@
 import { type NextPage } from "next";
 import Image, { StaticImageData } from "next/image";
-import { PageLayout } from "~/components/Layout";
 import one from "/public/images/photos/1.jpg";
 import two from "/public/images/photos/2.jpg";
 import three from "/public/images/photos/3.jpg";
@@ -51,6 +50,7 @@ import fortyseven from "/public/images/photos/47.jpeg";
 import fortyeight from "/public/images/photos/48.jpeg";
 import fortynine from "/public/images/photos/49.jpeg";
 import fifty from "/public/images/photos/50.jpeg";
+import { PageLayout } from "~/components/Layout";
 
 
 const Photos = () => {
