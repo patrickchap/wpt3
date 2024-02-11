@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { UserButton } from '@clerk/nextjs';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -7,7 +7,18 @@ export default function Header() {
     const [navbar, setNavbar] = useState(false);
     const location = useRouter();
     const showImageRoute = '/';
-    return (
+    const [isSticky, setIsSticky] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const navbar = document.getElementById('navbar');
+            const top = navbar?.offsetTop || 0;
+            setIsSticky(window.scrollY > top);
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []); return (
         <>
             {location.pathname === showImageRoute && (
                 <div className="top-image">
@@ -20,7 +31,7 @@ export default function Header() {
                     </div>
                 </div>
             )}
-            <nav className="w-full bg-[#c28285] bg-opacity-40 shadow">
+            <nav className={`w-full z-50 bg-[#e7cdce] shadow ${isSticky ? 'sticky top-0 bg-[#e7cdce]' : ''}`}>
                 <div className="justify-between pb-4 pt-4 mx-auto lg:max-w-7xl md:items-center md:flex md:px-8">
                     <div>
                         <div>
@@ -114,6 +125,12 @@ export default function Header() {
                                     <Link href="/registry" onClick={() => setNavbar(false)}
                                         className="block py-4 pr-4 pl-3 md:p-0 border-b border-gray-100 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:hover:bg-transparent md:hover:text-cyan-700 md:dark:hover:bg-transparent md:dark:hover:text-white">
                                         Registry
+                                    </Link>
+                                </li>
+                                <li className="color-secondary mt0">
+                                    <Link href="/faq" onClick={() => setNavbar(false)}
+                                        className="block py-4 pr-4 pl-3 md:p-0 border-b border-gray-100 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:hover:bg-transparent md:hover:text-cyan-700 md:dark:hover:bg-transparent md:dark:hover:text-white">
+                                        FAQs
                                     </Link>
                                 </li>
                                 <li className="color-secondary">

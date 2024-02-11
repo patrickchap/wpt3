@@ -3,7 +3,6 @@ import kenzi from "/public/images/bridesmaids/kenzi.png";
 import chy from "/public/images/bridesmaids/chy.png";
 import christil from "/public/images/bridesmaids/christil.png";
 import allison from "/public/images/bridesmaids/allison.png";
-import soraya from "/public/images/bridesmaids/soraya.png";
 import marky from "/public/images/bridesmaids/marky.png";
 import meghna from "/public/images/bridesmaids/meghna.png";
 import chloe from "/public/images/bridesmaids/chloe.png";
@@ -12,7 +11,7 @@ const bridesmaidsData = [
   {
     name: "Emily (Em)",
     message: "Emily has filled the best friend role since 5th grade and is now one of the bride's maids of honor. The bride remembers many fun times with Emily, laughing so hard they both peed their pants. Emily studied abroad in Spain and then moved away for a few years to get her Master's in Occupational Therapy. Still, the bride knows their friendship always picks up right where they left off, and to this day, Emily continues to be the most positive person the bride knows.",
-    src: emily 
+    src: emily
   },
   {
     name: "Kenzi (Kenz)",
@@ -35,11 +34,6 @@ const bridesmaidsData = [
     src: allison
   },
   {
-    name: "Soraya (Soracha)",
-    message: "Soraya is the bride’s basically adopted sister. They worked together in 2016 and have been friends ever since. Soraya has the biggest heart and always does things for others. Soraya is in school right now to get her degree in Human Resources. Both the bride and Soraya made a pact to have kids at the same time so their kids could be best friends and know them as Aunty Chan and Aunty Soraya.",
-    src: soraya
-  },
-  {
     name: "Marky",
     message: "The bride knew that as soon as she met Marky, she wanted to be friends with her. Marky is currently working on her bachelor’s degree in Business. Marky is the most genuine person and is beautiful inside and out. The bride loves their deep conversations at 4 a.m. when one of them usually falls asleep mid-sentence.",
     src: marky
@@ -47,7 +41,7 @@ const bridesmaidsData = [
   {
     name: "Meghna (Meg)",
     message: "Meghna is the definition of the life of the party. She recently moved to Arizona to get her degree. She loves to go out dancing and keeps the bride from becoming too much of a homebody. She will have others take pictures until they get the perfect one, and more importantly, she is so fun to be around no matter the occasion.",
-    src: meghna 
+    src: meghna
   },
   {
     name: "Chloe",

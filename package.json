@@ -23,7 +23,7 @@
     "@trpc/react-query": "^10.26.0",
     "@trpc/server": "^10.26.0",
     "@types/react-vertical-timeline-component": "^3.3.3",
-    "flowbite": "^1.7.0",
+    "flowbite": "^1.8.1",
     "flowbite-react": "^0.4.11",
     "material-react-table": "^1.14.0",
     "next": "^13.4.2",
