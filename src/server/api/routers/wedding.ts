@@ -1,12 +1,15 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "~/server/api/trpc";
+import { EmailTemplate } from '../../../components/EmailTemplate';
+import { Resend } from 'resend';
 
 const FormValuesUpdateItemSchema = z.object({
     id: z.number(),
     fullname: z.string(),
     mealselection: z.string(),
     songpreference: z.string(),
+    notes: z.string(),
     response: z.string(),
     guestId: z.number(),
 });
@@ -22,47 +25,99 @@ const FormValuesItemSchema = z.object({
     fullname: z.string(),
     mealselection: z.string(),
     songpreference: z.string(),
+    notes: z.string(),
     response: z.string(),
     guestId: z.number(),
 });
 
+const GroupItemSchema = z.object({
+    fullname: z.string(),
+    mealselection: z.string(),
+    songpreference: z.string(),
+    notes: z.string(),
+    response: z.string(),
+    guestId: z.number(),
+});
+
+type Guest = {
+    fullname: string;
+    mealselection: string;
+    songpreference: string;
+    notes: string;
+    response: string;
+    guestId: number;
+};
+const resend = new Resend(process.env.RESEND_API_KEY);
+
 export const weddingRouter = createTRPCRouter({
 
-postGuests: protectedProcedure
-    .input(
-        z.object({
-            guests: z.array(FormValuesGuestsSchema),
-        })
-    )
-    .mutation(async ({ ctx, input }) => {
+    postGuests: protectedProcedure
+        .input(
+            z.object({
+                guests: z.array(FormValuesGuestsSchema),
+            })
+        )
+        .mutation(async ({ ctx, input }) => {
 
-        const groups = await ctx.prisma.group.findMany();
-        const createGuests = input.guests.map(async (guest) => {
-            let group = groups.find((group) => group.groupname === guest.group);
-            if (!group) {
-                group = await ctx.prisma.group.create({
-                    data: {
-                        groupname: guest.group,
+            const allGroups = await ctx.prisma.group.findMany();
+            const existingGroupNames = new Set(allGroups.map(group => group.groupname.trim().toLowerCase()));
+
+            const inputGroups = [...new Set(input.guests.map(guest => guest.group.trim().toLowerCase()))]
+                .filter(groupName => !existingGroupNames.has(groupName))
+                .map(groupName => ({ groupname: groupName }));
+
+            const newGroups = await ctx.prisma.group.createMany({
+                data: inputGroups,
+            });
+            console.log("newGroups: ", newGroups);
+
+            // Fetch all groups once
+            const createGuests = input.guests.map(async (guest) => {
+                // Normalize the group name
+                const normalizedGroupName = guest.group.trim().toLowerCase();
+
+                // Check if the group already exists in the fetched groups
+                let group = await ctx.prisma.group.findUnique({
+                    where: {
+                        groupname: normalizedGroupName,
                     },
                 });
-            }
-            return {
-                fullname: guest.fullname,
-                groupId: group ? group.id : null, 
-            };
-        });
+                console.log(`Checking for group: ${normalizedGroupName}`);
+                console.log("Found group: ", group);
 
-        const resolvedGuests = await Promise.all(createGuests);
+                if (!group) {
+                    //group does not exist, create it
+                    group = await ctx.prisma.group.create({
+                        data: {
+                            groupname: normalizedGroupName,
+                        },
+                    });
+                    console.log("Created new group: ", group);
+                } else {
+                    console.log(`Group ${normalizedGroupName} already exists.`);
+                }
+
+                console.log("groupID: ", group.id);
+
+                return {
+                    fullname: guest.fullname,
+                    groupId: group.id,
+                };
+            });
+
+            // Wait for all guest processing to complete
+            const resolvedGuests = await Promise.all(createGuests);
+            console.log("Processed guests: ", resolvedGuests);
 
 
-        const guests = await ctx.prisma.guest.createMany({
-            data: resolvedGuests, 
-        });
-        console.log("guests");
-        console.log(guests);
+            const guests = await ctx.prisma.guest.createMany({
+                data: resolvedGuests,
+            });
+            console.log("guests");
+            console.log(guests);
 
-        return guests;
-    }),
+            return guests;
+        }),
 
 
 
@@ -79,7 +134,8 @@ postGuests: protectedProcedure
                 id: guest.id,
                 mealselection: guest.mealselection,
                 songpreference: guest.songpreference,
-                responce: guest.response == "Accept" ? true : false,
+                notes: guest.notes,
+                responce: guest.response === "Accept" ? true : false,
                 guestId: guest.guestId
             }))
 
@@ -104,14 +160,55 @@ postGuests: protectedProcedure
         .mutation(async ({ ctx, input }) => {
 
             const createRsvps = input.group.map((guest) => ({
-                mealselection: guest.mealselection,
+                mealselection: guest.response === "Accept" ? guest.mealselection : "",
                 songpreference: guest.songpreference,
-                responce: guest.response == "Accept" ? true : false,
+                notes: guest.notes,
+                responce: guest.response === "Accept" ? true : false,
                 guestId: guest.guestId
             }))
 
-            const rsvps = await ctx.prisma.rSVP.createMany({ data: createRsvps });
-            return rsvps;
+            try {
+                const rsvps = await ctx.prisma.rSVP.createMany({ data: createRsvps });
+                return rsvps;
+            } catch (error) {
+                console.error(error);
+            }
+        }),
+
+    postRSVPConfirmation: publicProcedure
+        .input(
+            z.object({
+                group: z.array(GroupItemSchema),
+                email: z.string().email(),
+            })
+        )
+        .mutation(async ({ ctx, input }) => {
+            const createRsvps: Guest[] = input.group.map((guest) => ({
+                fullname: guest.fullname,
+                mealselection: guest.mealselection,
+                songpreference: guest.songpreference,
+                notes: guest.notes,
+                response: guest.response,
+                guestId: guest.guestId
+            }))
+            try {
+
+                const { data, error } = await resend.emails.send({
+                    from: 'Patrick and Chantil <wedding@patrickandchantilwedding.com>',
+                    to: [input.email],
+                    subject: 'Email confirmation',
+                    text: "Thank you for confirming your RSVP!",
+                    react: EmailTemplate({ rsvps: createRsvps }),
+                });
+
+                if (error) {
+                    console.error(error);
+                    throw new Error("Failed to send email");
+                }
+                console.log('data', data);
+            } catch (error) {
+                console.error(error);
+            }
         }),
 
     getRSVPByGuestId: publicProcedure
@@ -158,6 +255,7 @@ postGuests: protectedProcedure
             if (!guest) {
                 throw new Error("Guest not found");
             }
+            console.log("guest: ", guest);
 
             return {
                 guest: guest,

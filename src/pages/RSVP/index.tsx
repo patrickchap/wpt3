@@ -4,7 +4,7 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import { LoadingPage } from "~/components/loading";
 import { useState } from "react";
 import Router from "next/router";
-import Working from "~/components/working";
+/* import Working from "~/components/working"; */
 
 type Inputs = {
     fullName: string;
@@ -15,7 +15,12 @@ const RSVPGuestSearch: NextPage<{ guestName: string }> = ({ guestName }) => {
         fullName: guestName,
     });
 
-    if (data) void Router.push(`/RSVP/${guestName}`);
+    if (data !== undefined && data?.guest.RSVP !== null) {
+        void Router.push(`/RSVP/update/${guestName}`);
+    } else if (data) {
+        void Router.push(`/RSVP/${guestName}`);
+    }
+
 
     return (
         <>
@@ -35,10 +40,10 @@ const RSVP: NextPage = () => {
     const onSubmit: SubmitHandler<Inputs> = (formData) => {
         setUserName(formData.fullName);
     };
-    const isUpdating = process.env.NEXT_PUBLIC_IS_UPDATING;
+    /* const isUpdating = process.env.NEXT_PUBLIC_IS_UPDATING;
     if(isUpdating){
         return <Working />
-    }
+    } */
     return (
         <div className="flex flex-col items-center">
             <h1 className="mt-8 text-3xl font-bold text-primary">RSVP</h1>

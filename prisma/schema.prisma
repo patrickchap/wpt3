@@ -20,6 +20,7 @@ model RSVP {
   id             Int      @id @default(autoincrement())
   mealselection  String
   songpreference String
+  notes          String
   responce       Boolean
   guest          Guest    @relation(fields: [guestId], references: [id])
   guestId        Int      @unique
@@ -41,6 +42,8 @@ model Guest {
 
 model Group {
   id        Int     @id @default(autoincrement())
-  groupname String  @db.VarChar(255)
+  groupname String  @db.VarChar(255) 
   guests    Guest[]
+
+  @@unique([groupname])
 }

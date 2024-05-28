@@ -61,67 +61,67 @@ const Photos = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-2 md:mx-2">
                 <div className="grid gap-1.5 md:h-20">
-                        <Image className="h-auto max-w-full rounded-lg" src={one} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={four} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={three} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={ten} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={eleven} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={twentyfive} alt="" width={400} height={400}/>
+                    <Image className="h-auto max-w-full rounded-lg" src={one} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={four} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={three} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={ten} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={eleven} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={twentyfive} alt="" width={400} height={400} />
 
 
-                        <Image className="h-auto max-w-full rounded-lg" src={twentyseven} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={twentyeight} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={twentynine} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={thirty} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={thirtyone} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={thirtytwo} alt="" width={400} height={400}/>
+                    <Image className="h-auto max-w-full rounded-lg" src={twentyseven} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={twentyeight} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={twentynine} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={thirty} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={thirtyone} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={thirtytwo} alt="" width={400} height={400} />
                 </div>
                 <div className="grid gap-1.5 md:h-20">
-                        <Image className="h-auto max-w-full rounded-lg" src={five} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={two} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={eight} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={seventeen} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={eighteen} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={twentythree} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={twentysix} alt="" width={400} height={400}/>
+                    <Image className="h-auto max-w-full rounded-lg" src={five} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={two} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={eight} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={seventeen} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={eighteen} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={twentythree} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={twentysix} alt="" width={400} height={400} />
 
-                        <Image className="h-auto max-w-full rounded-lg" src={thirtythree} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={thirtyfour} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={thirtyfive} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={thirtysix} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={thirtyseven} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={thirtyeight} alt="" width={400} height={400}/>
+                    <Image className="h-auto max-w-full rounded-lg" src={thirtythree} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={thirtyfour} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={thirtyfive} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={thirtysix} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={thirtyseven} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={thirtyeight} alt="" width={400} height={400} />
                 </div>
                 <div className="grid gap-1.5 md:h-20">
-                        <Image className="h-auto max-w-full rounded-lg" src={seven} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={six} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={nine} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={nineteen} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={twenty} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={twentytwo} alt="" width={400} height={400}/>
+                    <Image className="h-auto max-w-full rounded-lg" src={seven} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={six} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={nine} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={nineteen} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={twenty} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={twentytwo} alt="" width={400} height={400} />
 
-                        <Image className="h-auto max-w-full rounded-lg" src={thirtynine} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={forty} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={fortyone} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={fortytwo} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={fortythree} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={fortyfour} alt="" width={400} height={400}/>
+                    <Image className="h-auto max-w-full rounded-lg" src={thirtynine} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={forty} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={fortyone} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={fortytwo} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={fortythree} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={fortyfour} alt="" width={400} height={400} />
                 </div>
                 <div className="grid gap-1.5 md:h-20">
-                        <Image className="h-auto max-w-full rounded-lg" src={twelve} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={thirteen} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={fourteen} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={fifteen} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={sixteen} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={twentyone} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={twentyfour} alt="" width={400} height={400}/>
+                    <Image className="h-auto max-w-full rounded-lg" src={twelve} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={thirteen} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={fourteen} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={fifteen} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={sixteen} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={twentyone} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={twentyfour} alt="" width={400} height={400} />
 
-                        <Image className="h-auto max-w-full rounded-lg" src={fortyfive} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={fortysix} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={fortyseven} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={fortyeight} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={fortynine} alt="" width={400} height={400}/>
-                        <Image className="h-auto max-w-full rounded-lg" src={fifty} alt="" width={400} height={400}/>
+                    <Image className="h-auto max-w-full rounded-lg" src={fortyfive} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={fortysix} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={fortyseven} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={fortyeight} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={fortynine} alt="" width={400} height={400} />
+                    <Image className="h-auto max-w-full rounded-lg" src={fifty} alt="" width={400} height={400} />
                 </div>
             </div>
         </PageLayout>
@@ -144,17 +144,17 @@ const Photos = () => {
     )
 } */
 
-const MyImage: NextPage<{ src: StaticImageData, alt: string}> = ({ src, alt }) => {
+const MyImage: NextPage<{ src: StaticImageData, alt: string }> = ({ src, alt }) => {
     return (
-            <div className="grid gap-4">
-                    <Image
-                        src={src}
-                        className="h-auto max-w-full rounded-lg"
-                        alt={`@${alt}'s picture`}
-                        width={400}
-                        height={400}
-                    />
-            </div>
+        <div className="grid gap-4">
+            <Image
+                src={src}
+                className="h-auto max-w-full rounded-lg"
+                alt={`@${alt}'s picture`}
+                width={400}
+                height={400}
+            />
+        </div>
         /* <div classNameName="flex flex-col pt-8 col-span-3 md:col-span-1">
             <div classNameName="flex justify-center w-full">
             <Image

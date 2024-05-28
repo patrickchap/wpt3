@@ -51,3 +51,7 @@ p, li, input, textarea, label, button {
     font-family: 'Champagne & Limousines';
     font-size: 1.5rem;
 }
+strong{
+    font-family: 'Champagne & Limousines Bold';
+    font-size: 1.5rem;
+}

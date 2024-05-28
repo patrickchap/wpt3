@@ -88,7 +88,8 @@ const GuestTable: React.FC<TableProps> = ({ allGuests }) => {
                 return;
             }
             const guests = XLSX.utils.sheet_to_json<Guest>(workSheet, { header: 2 });
-
+            console.log("guests");
+            console.log(guests);
             addGuest({ guests });
         };
 
@@ -100,7 +101,7 @@ const GuestTable: React.FC<TableProps> = ({ allGuests }) => {
         setTableData([...tableData]);
     };
     const handleSaveRowEdits: MaterialReactTableProps<Guest>['onEditingRowSave'] =
-         ({ exitEditingMode, row, values }) => {
+        ({ exitEditingMode, row, values }) => {
             if (!Object.keys(validationErrors).length) {
                 tableData[row.index] = values;
                 //send/receive api updates here, then refetch or update local table data for re-render
