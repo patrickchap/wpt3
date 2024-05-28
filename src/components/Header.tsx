@@ -26,7 +26,7 @@ export default function Header() {
                         <h1 className="text-3xl text-white p-3">Patrick&#39;s and Chantil&#39;s Wedding</h1>
                         <h4 className="text-2xl text-white">08/09/2024</h4>
                         <Link href='/RSVP'>
-                            <button className="text-2xl text-white border-white border-2 rounded p-3 m-5 hidden">RSVP</button>
+                            <button className="text-2xl text-white border-white border-2 rounded p-3 m-5">RSVP</button>
                         </Link>
                     </div>
                 </div>
@@ -85,7 +85,7 @@ export default function Header() {
                                         Home
                                     </Link>
                                 </li>
-                                <li className="color-secondary hidden">
+                                <li className="color-secondary">
                                     <Link href="/RSVP" onClick={() => setNavbar(false)}
                                         className="block py-4 pr-4 pl-3 md:p-0 border-b border-gray-100 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:hover:bg-transparent md:hover:text-cyan-700 md:dark:hover:bg-transparent md:dark:hover:text-white">
                                         RSVP
