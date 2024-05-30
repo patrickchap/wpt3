@@ -6,7 +6,7 @@ import allison from "/public/images/bridesmaids/allison.png";
 import marky from "/public/images/bridesmaids/marky.png";
 import meghna from "/public/images/bridesmaids/meghna.png";
 import chloe from "/public/images/bridesmaids/chloe.png";
-import ali from "/public/images/bridesmaids/ali.png";
+import empty from "/public/images/groomsmen/blank.png";
 const bridesmaidsData = [
   {
     name: "Emily (Em)",
@@ -49,9 +49,9 @@ const bridesmaidsData = [
     src: chloe
   },
   {
-    name: "Alison (Ali)",
-    message: "The bride met Ali during her convocation at UVU, and became instant friends. Afterward, they found out they lived in the same neighborhood. The bride loved going to dances, concerts, and hanging out in Ali’s basement doing homework and watching movies. The bride is so proud of Ali for becoming a teacher and an amazing mom to Carter.",
-    src: ali
+    name: "Alejandra (Alé)",
+    message: "The bride met Alejandra (Alé) through mutual friends. Alé’s sweetness and fun personality make her a joy to be around. She always gives off positive vibes, and the bride loves hanging out with her and her adorable pug, Sofia. The bride is very grateful to have such a down-to-earth person in her life.",
+    src: empty
   }
 ];
 
