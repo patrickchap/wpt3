@@ -241,7 +241,7 @@ export const weddingRouter = createTRPCRouter({
             }));
 
             if (!rsvpData || rsvpData === undefined) {
-                rsvpData = [{ fullname: "", mealselection: "", songpreference: "", notes: "", response: "", guestId: -1, id: -1 }]
+                rsvpData = [{ fullname: "", mealselection: "", songpreference: "", notes: "", response: "", id: -1 }]
             }
             return {
                 rsvpData,

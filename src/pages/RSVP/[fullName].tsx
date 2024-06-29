@@ -14,14 +14,14 @@ const mealOptions = [
     { value: '6 oz FILET MIGNON - Yukon gold puree, broccolini, cipollini onions, Napa cabernet reduction', label: '6 oz FILET MIGNON - white cheddar and rosemary mashed potatoes, broccolini, cipollini onions, napa cabernet reduction' },
     { value: 'WILD MUSHROOM RISOTTO CAKE - English peas, crispy shallots, shitakes, italian salsa verde', label: 'WILD MUSHROOM RISOTTO CAKE - English peas, crispy shallots, shitakes, italian salsa verde' },
 ];
-const mealMap = new Map();
+const mealMap = new Map<string, string>();
 mealOptions.forEach(meal => mealMap.set(meal.value, meal.label));
 
-function getMealLabel(meal: string) {
-    if (!mealMap.has(meal)) {
-        return meal;
+function getMealLabel(meal: string): string {
+    if (mealMap.has(meal)) {
+        return mealMap.get(meal) as string;
     }
-    return mealMap.get(meal);
+    return meal;
 }
 
 
