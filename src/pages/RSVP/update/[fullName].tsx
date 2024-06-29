@@ -1,8 +1,8 @@
 
 import { GetStaticPropsContext, InferGetServerSidePropsType, NextPage } from "next";
-import Router from "next/router";
 import { useState } from "react";
 import { Controller, type SubmitHandler, useFieldArray, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { LoadingPage } from "~/components/loading";
 import { generateSSGHelper } from "~/server/helpers/ssgHelper";
 import { api, type RouterOutputs } from "~/utils/api";
@@ -97,16 +97,14 @@ const UpdateRSVPGroup: React.FC<{ data: RSVPUserAndGroup, submitter: string }> =
 const RSVPGroupForm: React.FC<{ formValues: FormValues }> = ({ formValues }) => {
     const { mutate: update, isLoading: isUpdating } = api.wedding.updateRSVP.useMutation({
         onSuccess: () => {
-            //void ctx.posts.getAll.invalidate();
-            //setShowThanks(true)
-            //console.log("update success");
+            toast.success("RSVP updated successfully!");
         },
         onError: (e) => {
             const errorMessage = e.data?.zodError?.fieldErrors.content;
             if (errorMessage?.[0]) {
                 //toast.error(errorMessage[0]);
             } else {
-                //toast.error("Failed to post! Please try again later.");
+                toast.error("Failed to post! Please try again later.");
             }
         },
     });
@@ -139,9 +137,9 @@ const RSVPGroupForm: React.FC<{ formValues: FormValues }> = ({ formValues }) => 
         { value: 'Decline', label: 'Decline' }
     ];
     const mealOptions = [
-        { value: 'LEMON ROSEMARY CHICKEN - Roasted fingerlings, asparagus, romesco', label: 'LEMON ROSEMARY CHICKEN -Roasted fingerlings, asparagus, romesco' },
-        { value: '6 oz FILET MIGNON - Yukon gold puree, broccolini, cipollini onions, Napa cabernet reduction', label: '6 oz FILET MIGNON - Yukon gold puree, broccolini, cipollini onions, Napa cabernet reduction' },
-        { value: 'WILD MUSHROOM RISOTTO CAKE - English peas, crispy shallots, shitakes, italian salsa verde', label: 'WILD MUSHROOM RISOTTO CAKE English peas, crispy shallots, shitakes, italian salsa verde' },
+        { value: 'LEMON ROSEMARY CHICKEN - Roasted fingerlings, asparagus, romesco', label: 'LEMON ROSEMARY CHICKEN - white gold mac and cheese, asparagus, romesco' },
+        { value: '6 oz FILET MIGNON - Yukon gold puree, broccolini, cipollini onions, Napa cabernet reduction', label: '6 oz FILET MIGNON - White cheddar and rosemary mashed potatoes, broccolini, cipollini onions, napa cabernet reduction' },
+        { value: 'WILD MUSHROOM RISOTTO CAKE - English peas, crispy shallots, shitakes, italian salsa verde', label: 'WILD MUSHROOM RISOTTO CAKE - english peas, crispy shallots, shitakes, italian salsa verde' },
     ];
 
     const onSubmit: SubmitHandler<FormValues> = (formData) => {

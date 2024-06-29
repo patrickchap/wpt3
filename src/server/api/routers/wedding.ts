@@ -225,6 +225,29 @@ export const weddingRouter = createTRPCRouter({
             }
         }),
 
+    getAllRsvps: protectedProcedure
+        .query(async ({ ctx }) => {
+            const allRsvps = await ctx.prisma.rSVP.findMany({
+                include: { guest: true }
+            });
+
+            let rsvpData = allRsvps.map(rsvp => ({
+                fullname: rsvp.guest.fullname,
+                mealselection: rsvp.mealselection,
+                songpreference: rsvp.songpreference,
+                notes: rsvp.notes,
+                response: rsvp.responce ? "Accept" : "Decline",
+                id: rsvp.id
+            }));
+
+            if (!rsvpData || rsvpData === undefined) {
+                rsvpData = [{ fullname: "", mealselection: "", songpreference: "", notes: "", response: "", guestId: -1, id: -1 }]
+            }
+            return {
+                rsvpData,
+            }
+        }),
+
     getAllGuests: protectedProcedure
         .query(async ({ ctx }) => {
             const allGuests = await ctx.prisma.guest.findMany({

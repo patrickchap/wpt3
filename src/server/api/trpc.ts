@@ -32,8 +32,8 @@ interface AuthContext {
 type CreateContextOptions = Record<string, never>;
 
 type customContextOptions = {
-    req: NextApiRequest | null;
-    auth: SignedInAuthObject | SignedOutAuthObject | null; 
+  req: NextApiRequest | null;
+  auth: SignedInAuthObject | SignedOutAuthObject | null;
 
 }
 /**
@@ -93,7 +93,7 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
 
 // check if the user is signed in, otherwise throw a UNAUTHORIZED CODE
 const isAuthed = t.middleware(({ next, ctx }) => {
-  if (!ctx.auth?.userId) {
+  if (!ctx.auth?.userId || ctx.auth.userId !== "user_2SSYhzmdpUCRriX0aYNcfX4mLzY") {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
   return next({

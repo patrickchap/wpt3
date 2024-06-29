@@ -9,6 +9,22 @@ import { generateSSGHelper } from "~/server/helpers/ssgHelper";
 import { api } from "~/utils/api";
 import type { RouterOutputs } from "~/utils/api";
 
+const mealOptions = [
+    { value: 'LEMON ROSEMARY CHICKEN - Roasted fingerlings, asparagus, romesco', label: 'LEMON ROSEMARY CHICKEN - white gold mac and cheese, asparagus, romesco' },
+    { value: '6 oz FILET MIGNON - Yukon gold puree, broccolini, cipollini onions, Napa cabernet reduction', label: '6 oz FILET MIGNON - white cheddar and rosemary mashed potatoes, broccolini, cipollini onions, napa cabernet reduction' },
+    { value: 'WILD MUSHROOM RISOTTO CAKE - English peas, crispy shallots, shitakes, italian salsa verde', label: 'WILD MUSHROOM RISOTTO CAKE - English peas, crispy shallots, shitakes, italian salsa verde' },
+];
+const mealMap = new Map();
+mealOptions.forEach(meal => mealMap.set(meal.value, meal.label));
+
+function getMealLabel(meal: string) {
+    if (!mealMap.has(meal)) {
+        return meal;
+    }
+    return mealMap.get(meal);
+}
+
+
 type Guest = {
     fullname: string;
     mealselection: string;
@@ -155,7 +171,7 @@ const RSVPStepOne: React.FC<{ rsvps: RSVPS | undefined }> = ({ rsvps }) => {
             if (rsvps) {
                 const emailRsvps: Guest[] = rsvps.group.map((group) => ({
                     fullname: group.fullname,
-                    mealselection: group.mealselection,
+                    mealselection: getMealLabel(group.mealselection),
                     songpreference: group.songpreference,
                     notes: group.notes,
                     response: group.response,
@@ -186,7 +202,7 @@ const RSVPStepOne: React.FC<{ rsvps: RSVPS | undefined }> = ({ rsvps }) => {
                 {rsvps?.group.map((group) => (
                     <div className="flex flex-col items-left w-5/6" key={group.id}>
                         <h3 className="text-lg font-bold pb-2">{group.fullname}</h3>
-                        <p className="flex-wrap"><strong className="font-extrabold">Meal</strong>: {group.mealselection}</p>
+                        <p className="flex-wrap"><strong className="font-extrabold">Meal</strong>: {getMealLabel(group.mealselection)}</p>
                         <p><strong className="text-secondary font-extrabold">Song Request</strong>: {group.songpreference}</p>
                         <p><strong>Food Alergies</strong>: {group.notes}</p>
                         <p><strong>Response</strong>: {group.response}</p>
@@ -318,11 +334,7 @@ const RSVPGroupForm: React.FC<{ formValues: FormValues, submitter: string, setSt
         { value: 'Accept', label: 'Accept' },
         { value: 'Decline', label: 'Decline' }
     ];
-    const mealOptions = [
-        { value: 'LEMON ROSEMARY CHICKEN - Roasted fingerlings, asparagus, romesco', label: 'LEMON ROSEMARY CHICKEN -Roasted fingerlings, asparagus, romesco' },
-        { value: '6 oz FILET MIGNON - Yukon gold puree, broccolini, cipollini onions, Napa cabernet reduction', label: '6 oz FILET MIGNON - Yukon gold puree, broccolini, cipollini onions, Napa cabernet reduction' },
-        { value: 'WILD MUSHROOM RISOTTO CAKE - English peas, crispy shallots, shitakes, italian salsa verde', label: 'WILD MUSHROOM RISOTTO CAKE English peas, crispy shallots, shitakes, italian salsa verde' },
-    ];
+
 
     const onSubmit: SubmitHandler<FormValues> = (formData) => {
         mutate({ group: formData.group });
