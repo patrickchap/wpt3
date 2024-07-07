@@ -159,9 +159,12 @@ const RSVPStepOne: React.FC<{ rsvps: RSVPS | undefined }> = ({ rsvps }) => {
     const pathname = usePathname();
     const router = useRouter();
     const searchParams = useSearchParams();
-
+    const ctx = api.useContext();
     const { mutate, isLoading: isPosting } = api.wedding.postRSVPConfirmation.useMutation({
         onSuccess: (data, varialbes) => {
+            void ctx.wedding.getGuestAndGroupByGuestName.invalidate();
+            void ctx.wedding.getGuestByGuestName.invalidate();
+
             const params = new URLSearchParams(searchParams.toString());
             params.set('step', '2');
             router.replace(`${pathname}?${params.toString()}`);
@@ -292,7 +295,9 @@ const RSVPGroupForm: React.FC<{ formValues: FormValues, submitter: string, setSt
     const ctx = api.useContext();
     const { mutate, isLoading: isPosting } = api.wedding.postRSVP.useMutation({
         onSuccess: (data, varialbes) => {
-            void ctx.wedding.getGuestAndGroupByGuestName.invalidate({ fullName: submitter });
+            void ctx.wedding.getGuestAndGroupByGuestName.invalidate();
+            void ctx.wedding.getGuestByGuestName.invalidate();
+
             const dataGroup: RSVPS = {
                 group: varialbes.group.map((group) => ({
                     fullname: group.fullname,
