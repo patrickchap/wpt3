@@ -2,7 +2,7 @@ import { GetStaticPropsContext, InferGetServerSidePropsType, NextPage } from "ne
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import Router from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Controller, type SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { LoadingPage } from "~/components/loading";
 import { generateSSGHelper } from "~/server/helpers/ssgHelper";
@@ -42,28 +42,39 @@ const RSVPGuestOrGroup = (
     const { data, isLoading } = api.wedding.getGuestAndGroupByGuestName.useQuery({ fullName: props.guestName });
     const stepFromUrl = parseInt(searchParams.get("step") || "0", 10);
     const group = data?.guest.group?.guests.filter(g => g.RSVP != null);
-    let guests: RSVPS = { group: [] };
-    if (group) {
-        guests = {
-            group: group.map((group) => ({
-                id: -1,
-                fullname: group.fullname,
-                mealselection: group.RSVP?.mealselection || "",
-                songpreference: group.RSVP?.songpreference || "",
-                notes: group.RSVP?.notes || "",
-                response: group.RSVP?.responce === true ? "Accept" : "Decline",
-                guestId: -1,
-            })),
-        };
-    }
+
+    const guests = useMemo<RSVPS>(() => {
+        const group = data?.guest.group?.guests.filter(g => g.RSVP != null);
+        if (group) {
+            return {
+                group: group.map((group) => ({
+                    id: -1,
+                    fullname: group.fullname,
+                    mealselection: group.RSVP?.mealselection || "",
+                    songpreference: group.RSVP?.songpreference || "",
+                    notes: group.RSVP?.notes || "",
+                    response: group.RSVP?.responce === true ? "Accept" : "Decline",
+                    guestId: -1,
+                })),
+            };
+        }
+        return { group: [] };
+    }, [data]);
 
 
+    const [guest, setGuest] = useState(guests);
+    useEffect(() => {
+        if (JSON.stringify(guest) !== JSON.stringify(guests)) {
+            setGuest(guests);
+        }
+    }, [guests, guest]);
     const [step, setStep] = useState(stepFromUrl);
     useEffect(() => {
         if (stepFromUrl !== step) {
             setStep(stepFromUrl);
         }
     }, [stepFromUrl, step]);
+
     //const [dataGroup, setDataGroup] = useState<RSVPS | undefined>(guests);
     if (isLoading) {
         return <LoadingPage />;
@@ -77,12 +88,12 @@ const RSVPGuestOrGroup = (
                             <div className="bg-gray-600 h-2.5 rounded-full dark:bg-gray-300 w-1/3" />
                         </div>
                         <div className="flex flex-col items-center mt-8">
-                            <RSVPGroup setStep={setStep} data={data} submitter={data.guest.fullname} />
+                            <RSVPGroup setGuest={setGuest} setStep={setStep} data={data} submitter={data.guest.fullname} />
                         </div>
                     </>
                 )}
-                {guests.group.length > 0 && step === 1 && (
-                    <RSVPStepOne rsvps={guests} />
+                {guest.group.length > 0 && step === 1 && (
+                    <RSVPStepOne rsvps={guest} />
                 )}
                 {step === 2 && (
                     <RSVPPStepTwo />
@@ -148,6 +159,7 @@ const RSVPStepOne: React.FC<{ rsvps: RSVPS | undefined }> = ({ rsvps }) => {
     const pathname = usePathname();
     const router = useRouter();
     const searchParams = useSearchParams();
+
     const { mutate, isLoading: isPosting } = api.wedding.postRSVPConfirmation.useMutation({
         onSuccess: (data, varialbes) => {
             const params = new URLSearchParams(searchParams.toString());
@@ -200,7 +212,7 @@ const RSVPStepOne: React.FC<{ rsvps: RSVPS | undefined }> = ({ rsvps }) => {
                 <h1 className="text-3xl font-bold mt-8 pb-10 text-primary">Thank You For Submitting your RSVP!</h1>
                 <h2 className="text-2xl font-bold mt-8 pb-10 text-primary">Please review your RSVP below:</h2>
                 {rsvps?.group.map((group) => (
-                    <div className="flex flex-col items-left w-5/6" key={group.id}>
+                    <div className="flex flex-col items-left w-5/6" key={group.fullname + "_1"}>
                         <h3 className="text-lg font-bold pb-2">{group.fullname}</h3>
                         <p className="flex-wrap"><strong className="font-extrabold">Meal</strong>: {getMealLabel(group.mealselection)}</p>
                         <p><strong className="text-secondary font-extrabold">Song Request</strong>: {group.songpreference}</p>
@@ -249,7 +261,7 @@ const RSVPPStepTwo: React.FC = () => {
     )
 }
 
-const RSVPGroup: React.FC<{ data: RSVPUserAndGroup, submitter: string, setStep: React.Dispatch<React.SetStateAction<number>> }> = ({ data, submitter, setStep }) => {
+const RSVPGroup: React.FC<{ data: RSVPUserAndGroup, submitter: string, setStep: React.Dispatch<React.SetStateAction<number>>, setGuest: React.Dispatch<React.SetStateAction<RSVPS>> }> = ({ data, submitter, setStep, setGuest }) => {
     const group = data.guest.group?.guests.filter(g => g.RSVP == null);
 
     if (!group) return <div>404</div>;
@@ -267,12 +279,12 @@ const RSVPGroup: React.FC<{ data: RSVPUserAndGroup, submitter: string, setStep: 
 
     return (
         <>
-            <RSVPGroupForm formValues={guests} submitter={submitter} setStep={setStep} />
+            <RSVPGroupForm formValues={guests} submitter={submitter} setStep={setStep} setGuest={setGuest} />
         </>
     )
 }
 
-const RSVPGroupForm: React.FC<{ formValues: FormValues, submitter: string, setStep?: React.Dispatch<React.SetStateAction<number>> }> = ({ formValues, submitter, setStep }) => {
+const RSVPGroupForm: React.FC<{ formValues: FormValues, submitter: string, setStep?: React.Dispatch<React.SetStateAction<number>>, setGuest: React.Dispatch<React.SetStateAction<RSVPS>> }> = ({ formValues, submitter, setStep, setGuest }) => {
     const searchParams = useSearchParams();
 
     const pathname = usePathname();
@@ -291,6 +303,7 @@ const RSVPGroupForm: React.FC<{ formValues: FormValues, submitter: string, setSt
                     guestId: group.guestId,
                 })),
             };
+            setGuest(dataGroup);
             if (setStep) {
                 const params = new URLSearchParams(searchParams.toString());
                 params.set('step', '1');
