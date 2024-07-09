@@ -29,7 +29,7 @@ import { Delete, Edit } from '@mui/icons-material';
 import { Prisma } from '@prisma/client';
 
 type Guest = {
-    fullname: string, group: string, id?: number | null | undefined
+    fullname: string, group: string, id?: number | null | undefined, rsvp?: boolean | null | undefined
 }
 interface TableProps {
     allGuests: Guest[];
@@ -43,7 +43,7 @@ const GuestTable: React.FC<TableProps> = ({ allGuests }) => {
         [cellId: string]: string;
     }>({});
 
-
+    console.log(allGuests);
     const ctx = api.useContext();
 
     const { mutate: addGuest, isLoading: isAdding } = api.wedding.postGuests.useMutation({
@@ -51,15 +51,13 @@ const GuestTable: React.FC<TableProps> = ({ allGuests }) => {
             guests: {
                 group: string;
                 fullname: string;
-                id?: number | null | undefined
+                id?: number | null | undefined;
             }[];
         }, context: unknown) => {
 
             void ctx.wedding.getAllGuests.invalidate();
             tableData.push(...variables.guests);
             setTableData([...tableData]);
-            console.log("variables.guests");
-            console.log(variables.guests);
         },
         onError: (e) => {
             const errorMessage = e.data?.zodError?.fieldErrors.content;
@@ -79,7 +77,7 @@ const GuestTable: React.FC<TableProps> = ({ allGuests }) => {
 
         const reader = new FileReader();
 
-        reader.onload = function(event) {
+        reader.onload = (event) => {
             const data = event.target?.result as string;
             const workbook = XLSX.read(data, { type: 'binary' });
             const firstSheetName = workbook.SheetNames[0];
@@ -90,6 +88,7 @@ const GuestTable: React.FC<TableProps> = ({ allGuests }) => {
             const guests = XLSX.utils.sheet_to_json<Guest>(workSheet, { header: 2 });
             console.log("guests");
             console.log(guests);
+
             addGuest({ guests });
         };
 
@@ -136,6 +135,13 @@ const GuestTable: React.FC<TableProps> = ({ allGuests }) => {
         {
             header: 'Group',
             accessorKey: 'group',
+        },
+        {
+            header: 'RSVP',
+            accessorKey: 'rsvp',
+            Cell: ({ cell }) => (
+                <span>{cell.getValue() ? 'Yes' : 'No'}</span>
+            ),
         },
     ],
         [],

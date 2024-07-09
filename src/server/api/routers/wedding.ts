@@ -18,6 +18,7 @@ const FormValuesGuestsSchema = z.object({
     fullname: z.string(),
     group: z.string(),
     id: z.number().nullish(),
+    rsvp: z.boolean().nullish(),
 });
 
 const FormValuesItemSchema = z.object({
@@ -69,7 +70,6 @@ export const weddingRouter = createTRPCRouter({
             const newGroups = await ctx.prisma.group.createMany({
                 data: inputGroups,
             });
-            console.log("newGroups: ", newGroups);
 
             // Fetch all groups once
             const createGuests = input.guests.map(async (guest) => {
@@ -82,8 +82,6 @@ export const weddingRouter = createTRPCRouter({
                         groupname: normalizedGroupName,
                     },
                 });
-                console.log(`Checking for group: ${normalizedGroupName}`);
-                console.log("Found group: ", group);
 
                 if (!group) {
                     //group does not exist, create it
@@ -92,16 +90,15 @@ export const weddingRouter = createTRPCRouter({
                             groupname: normalizedGroupName,
                         },
                     });
-                    console.log("Created new group: ", group);
                 } else {
                     console.log(`Group ${normalizedGroupName} already exists.`);
                 }
 
-                console.log("groupID: ", group.id);
 
                 return {
                     fullname: guest.fullname,
                     groupId: group.id,
+                    rsvp: false
                 };
             });
 
@@ -251,17 +248,18 @@ export const weddingRouter = createTRPCRouter({
     getAllGuests: protectedProcedure
         .query(async ({ ctx }) => {
             const allGuests = await ctx.prisma.guest.findMany({
-                include: { group: true }
+                include: { group: true, RSVP: true }
             });
             let guestData = allGuests.map(guest => ({
                 fullname: guest.fullname,
                 group: guest.group?.groupname ?? "",
-                id: guest.id
+                id: guest.id,
+                rsvp: guest.RSVP == null ? false : true
             }));
 
 
             if (!guestData || guestData == undefined) {
-                guestData = [{ fullname: "", group: "", id: -1 }]
+                guestData = [{ fullname: "", group: "", id: -1, rsvp: false }]
             }
             return {
                 guestData,

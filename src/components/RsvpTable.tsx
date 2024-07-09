@@ -72,16 +72,14 @@ const RsvpTable: React.FC<TableProps> = ({ allRsvps }) => {
     );
     return (
         <>
-            <div className="container">
-                <MaterialReactTable
-                    columns={columns}
-                    data={tableData}
-                    enableColumnOrdering
-                    editingMode="modal"
-                    enableGrouping
-                    enableGlobalFilter={false}
-                />
-            </div>
+            <MaterialReactTable
+                columns={columns}
+                data={tableData}
+                enableColumnOrdering
+                editingMode="modal"
+                enableGrouping
+                enableGlobalFilter={false}
+            />
         </>
     );
 }
