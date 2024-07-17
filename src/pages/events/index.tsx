@@ -14,7 +14,7 @@ export default function Events() {
           <p className="pb-8 md:pb-4">We would like to invite you all to join us at Bar One.</p>
           <p className="pb-8 md:pb-4">Come celebrate with us and enjoy an evening of fun, food, and drinks!</p>
           <p className="pb-8 md:pb-4">Date: August 8th, 2024</p>
-          <p className="pb-8 md:pb-4">Time: 5:00 PM - 10:00 PM</p>
+          <p className="pb-8 md:pb-4">Time: 5:00 PM - 9:00 PM, Dinner served at 6:00 PM</p>
           <p className="pb-8 md:pb-4">Location: Bar One, 1990 Olympic Vly Rd, Tahoe City, CA 96145</p>
           <p className="pb-8 md:pb-4">Dress Code: Dressy Casual</p>
         </div>
