@@ -6,7 +6,8 @@ import allison from "/public/images/bridesmaids/allison.png";
 import marky from "/public/images/bridesmaids/marky.png";
 import meghna from "/public/images/bridesmaids/meghna.png";
 import chloe from "/public/images/bridesmaids/chloe.png";
-import empty from "/public/images/groomsmen/blank.png";
+import alejandra from "/public/images/bridesmaids/alejandra.png";
+
 const bridesmaidsData = [
   {
     name: "Emily (Em)",
@@ -51,7 +52,7 @@ const bridesmaidsData = [
   {
     name: "Alejandra (Alé)",
     message: "The bride met Alejandra (Alé) through mutual friends. Alé’s sweetness and fun personality make her a joy to be around. She always gives off positive vibes, and the bride loves hanging out with her and her adorable pug, Sofia. The bride is very grateful to have such a down-to-earth person in her life.",
-    src: empty
+    src: alejandra
   }
 ];
 
