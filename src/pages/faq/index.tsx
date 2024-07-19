@@ -80,7 +80,7 @@ export default function Faq() {
               </Accordion.Title>
               <Accordion.Content>
                 <p className="mb-2 text-md md:text-lg text-gray-500 dark:text-gray-400">
-                  The only way to get to the ceremony and reception is by taking the aerial tram, which will run at 3:00pm, 3:15pm, and 3:30pm. Please plan to arrive early so you do not miss the final tram ride.
+                  The only way to get to the ceremony and reception is by taking the aerial tram, which will run at 3:15pm and 3:30pm. Please plan to arrive early so you do not miss the final tram ride.
                 </p>
                 <p className="mb-2 text-md md:text-lg text-gray-500 dark:text-gray-400">
                   Once the ceremony is completed, we will have cocktail hour, dinner, and dancing, but the tram will be available for guests to leave and return if needed.
