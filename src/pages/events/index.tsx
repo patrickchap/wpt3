@@ -97,7 +97,7 @@ const Timeline = () => {
         contentArrowStyle={{
           borderRight: "7px solid rgba(130, 194, 191, 0.1)",
         }}
-        date="5:50 - 7:45 PM"
+        date="5:50 - 7:00 PM"
         iconStyle={{
           background: "#f7ebec",
           color: "#d69b9f",
@@ -119,7 +119,7 @@ const Timeline = () => {
         contentArrowStyle={{
           borderRight: "7px solid rgba(130, 194, 191, 0.1)",
         }}
-        date="7:45 - 10:00 PM"
+        date="7:00 - 10:00 PM"
         iconStyle={{
           background: "#f7ebec",
           color: "#d69b9f",
