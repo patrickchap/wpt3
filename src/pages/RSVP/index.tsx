@@ -38,7 +38,7 @@ const RSVP: NextPage = () => {
         <div className="flex flex-col items-center">
             <h1 className="mt-8 text-3xl font-bold text-primary">RSVP</h1>
             <div className="pt-20 flex-col items-center">
-                <h4 className="text-xl font-bold text-primary">Sorry, we are no longer accepting RSVP's</h4>
+                <h4 className="text-xl font-bold text-primary">Sorry, we are no longer accepting RSVP&apos;s</h4>
             </div>
         </div>
     );
